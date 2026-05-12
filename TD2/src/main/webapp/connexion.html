@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Connexion</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Se connecter</h1>
+        <button id="bouton-connexion">Connexion</button>
+        <input id="input-mail" type="email" value="t@t.t" placeholder="ton.mail@mail.com"><!-- comment -->
+        <input id="input-password" value="t" type="password">
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page Connexion");
+                document.getElementById('bouton-connexion').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Connexion'");
+                    connexion();
+                });
+            };
+            
+            async function connexion() {
+                console.log("Appel de l'Action: Connexion");
+                let url = './ActionServlet?todo=eleve-connexion' + "&" + "mail=" + document.getElementById('input-mail').value + "&" + "password=" + document.getElementById('input-password').value;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                if (jsonResponse) {
+                    alert("ca fonctionne");
+                }
+            }
+            
+            window.onload = initPage;
+        </script>
+    </body>
+</html>

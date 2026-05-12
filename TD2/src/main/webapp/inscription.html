@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>S'inscrire</title>
+    </head>
+<body>
+    <h2>Inscription</h2>
+    <div>
+        <input type="text" id="input-nom" value="Einstein" placeholder="Nom" required>
+        <input type="text" id="input-prenom" value="Abert" placeholder="Prénom" required>
+        <input type="email" id="input-mail" value="Albert.Einstein@insa-lyon.fr" placeholder="Email" required>
+        <input type="password" id="input-password" placeholder="Mot de passe" required>
+        <input type="text" id="input-dateNaissance" value="2005-04-16" placeholder="yyyy-MM-dd" required>
+        <input type="number" id="input-classe" value="1" placeholder="Classe">
+        <input type="text" id="input-codeEtablissement" value="0691664J" placeholder="Code Établissement (ex: 0691664J)">
+    </div>
+    <button id="button-submition" type="submit">S'inscrire</button>
+
+    <script>
+            function initPage() {
+                console.log("Initialisation de la page d'inscription");
+                document.getElementById('button-submition').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Inscription'");
+                    inscription();
+                });
+            };
+            
+            async function inscription() {
+                console.log("Appel de l'Action: Inscription"); 
+                
+                let url = './ActionServlet?todo=eleve-inscription' + "&nom=" + document.getElementById('input-nom').value + "&prenom=" + document.getElementById('input-prenom').value + "&mail=" + document.getElementById('input-mail').value + "&password=" + document.getElementById('input-password').value + "&dateNaissance=" + document.getElementById('input-dateNaissance').value + "&classe=" + document.getElementById('input-classe').value + "&codeEtablissement=" + document.getElementById('input-codeEtablissement').value;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                if (jsonResponse) {
+                    alert("ca fonctionne");
+                }
+            }
+            
+            window.onload = initPage;
+        </script>
+</body>
+</html>
