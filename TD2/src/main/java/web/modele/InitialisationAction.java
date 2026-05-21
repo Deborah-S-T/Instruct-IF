@@ -6,6 +6,8 @@ package web.modele;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import metier.service.Service;
+
 /**
  *
  * @author dsteferra
@@ -14,6 +16,7 @@ public class InitialisationAction extends Action {
 
     @Override
     public void execute(HttpServletRequest request) {
+        
     }
     
 }

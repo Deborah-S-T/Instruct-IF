@@ -21,6 +21,7 @@ web\vue\ReussiteSerialisation.class
 web\modele\InscrireEleveAction.class
 web\modele\InitialisationAction.class
 web\modele\StatsNbEleveEtablissementAction.class
+web\vue\ListerMatieresSerialisation.class
 web\modele\IntervenantLogInAction.class
 web\test\ServiceTest.class
 web\modele\GetListeEtablissementsAction.class

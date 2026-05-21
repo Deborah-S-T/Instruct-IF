@@ -17,12 +17,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import metier.service.Service;
 import web.modele.Action;
 import web.modele.ConsulterListeDemandesAction;
 import web.modele.EleveLogInAction;
 import web.modele.InscrireEleveAction;
+import web.modele.ListerMatieresAction;
 import web.test.DemandeTest;
 import web.vue.ListeDemandesSerialisation;
+import web.vue.ListerMatieresSerialisation;
 import web.vue.ReussiteSerialisation;
 import web.vue.Serialisation;
 
@@ -83,6 +86,16 @@ public class ActionServlet extends HttpServlet {
                 serialisation.appliquer(request, response);
                 break;
             }
+            case "lister-matieres": {
+                System.out.println("case 3");
+                action = new ListerMatieresAction();
+                action.execute(request);
+                
+                //serialisation
+                serialisation = new ListerMatieresSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Action non reconnue");
                 break;
@@ -94,6 +107,9 @@ public class ActionServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         JpaUtil.creerFabriquePersistance();
+        Service service = new Service();
+        service.initialisation();
+        System.out.println("a initialise la base");
     }
 
     @Override

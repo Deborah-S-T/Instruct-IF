@@ -7,10 +7,53 @@
     </head>
     <body>
         <h1>Nouvelle Demande</h1>
+        <div>
+            <p>matieres</p>
+            <select id="matiere-select">
+                <option value="">--Veuillez choisir une option--</option>
+            </select>
+        </div>
+        <div>
+            <p>themes</p>
+            <select id="theme-select">
+                <option value="">--Veuillez choisir une option--</option>
+            </select>
+        </div>
+        
         <script>
             function initPage() {
                 console.log("Initialisation de la page nouvelle Demande");
+                mettreMatieres();
+                //mettreThemes();
             };
+            
+            async function mettreMatieres() {
+                console.log("Appel de l'Action: Lister les matieres");
+                let url = './ActionServlet?todo=lister-matieres';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    console.log('Affichage de la liste de matieres');
+                    var select = document.getElementById("matiere-select");
+                    for (let m of jsonResponse["matieres"]) {
+                        var option = document.createElement("option");
+                        option.innerHTML = m["nom"];
+                        option.value = m["id"];
+                        select.appendChild(option);
+                    }
+                }
+            }
             
             window.onload = initPage;
         </script>

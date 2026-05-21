@@ -3,11 +3,19 @@
     <head>
         <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Page d'acceuil</h1>
         <a href="connexion.html">connexion</a>
         <br>
         <a href="inscription.html">inscription</a>
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page Index");
+            };
+            
+            window.onload = initPage;
+        </script>
     </body>
 </html>

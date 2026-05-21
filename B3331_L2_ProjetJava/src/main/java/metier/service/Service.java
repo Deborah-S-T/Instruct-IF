@@ -385,4 +385,12 @@ public class Service {
         List<Integer> liste_proportions = Arrays.asList(soutien_inf20, soutien_20et40, soutien_40et60, soutien_sup60);
         return liste_proportions;
     } 
+    
+    public Matiere getMatiereById(long id) {
+        MatiereDao mdao = new MatiereDao();
+        JpaUtil.creerContextePersistance();
+        Matiere m = mdao.findById(id);
+        JpaUtil.fermerContextePersistance();
+        return m;
+    }
 }
