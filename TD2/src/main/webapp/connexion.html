@@ -10,6 +10,7 @@
         <button id="bouton-connexion">Connexion</button>
         <input id="input-mail" type="email" value="t@t.t" placeholder="ton.mail@mail.com"><!-- comment -->
         <input id="input-password" value="t" type="password">
+        <div id="div-error-affichage"></div>
         <script>
             function initPage() {
                 console.log("Initialisation de la page Connexion");
@@ -35,9 +36,23 @@
                             }
                         );
                 console.log("json:",jsonResponse);
-                if (jsonResponse) {
-                    alert("ca fonctionne");
+                if (jsonResponse.reussit == "true") {
+                    connected();
                 }
+                else if (jsonResponse.reussit == "false") {
+                    notConnected();
+                }
+            }
+            
+            function connected() {
+                window.location.pathname = 'TD2/nouvelleDemande.html';
+            }
+            
+            function notConnected() {
+                var divError = document.getElementById("div-error-affichage");
+                let affichageNonConnexion = document.createElement("p");
+                affichageNonConnexion.innerHTML = "Mot de passe ou identifiant incorrects";
+                divError.innerHTML = affichageNonConnexion.innerHTML;
             }
             
             window.onload = initPage;
