@@ -7,22 +7,33 @@
     </head>
     <body>
         <h1>Se connecter</h1>
-        <button id="bouton-connexion">Connexion</button>
-        <input id="input-mail" type="email" value="Albert.Einstein@insa-lyon.fr" placeholder="ton.mail@mail.com"><!-- comment -->
-        <input id="input-password" value="y" type="password">
+        <h2>Eleve</h2>
+        <button id="bouton-connexion-eleve">Connexion</button>
+        <input id="input-mail-eleve" type="email" value="Albert.Einstein@insa-lyon.fr" placeholder="ton.mail@mail.com"><!-- comment -->
+        <input id="input-password-eleve" value="y" type="password">
+        
+        <h2>Eleve</h2>
+        <button id="bouton-connexion-intervenant">Connexion</button>
+        <input id="input-login-intervenant" type="text" value="sfavro" placeholder="pnom"><!-- comment -->
+        <input id="input-password-intervenant" value="mdp" type="password">
+ 
         <div id="div-error-affichage"></div>
         <script>
             function initPage() {
                 console.log("Initialisation de la page Connexion");
-                document.getElementById('bouton-connexion').addEventListener('click', function() {
-                    console.log("Click sur le bouton 'Connexion'");
-                    connexion();
+                document.getElementById('bouton-connexion-eleve').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Connexion Eleve'");
+                    connexionEleve();
+                });
+                document.getElementById('bouton-connexion-intervenant').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Connexion Intervennant'");
+                    connexionIntervenant();
                 });
             };
             
-            async function connexion() {
+            async function connexionEleve() {
                 console.log("Appel de l'Action: Connexion");
-                let url = './ActionServlet?todo=eleve-connexion' + "&" + "mail=" + document.getElementById('input-mail').value + "&" + "password=" + document.getElementById('input-password').value;
+                let url = './ActionServlet?todo=eleve-connexion' + "&" + "mail=" + document.getElementById('input-mail-eleve').value + "&" + "password=" + document.getElementById('input-password-eleve').value;
                 let jsonResponse = await fetch(url)
                         .then(
                             function(httpResponse) {
@@ -37,21 +48,41 @@
                         );
                 console.log("json:",jsonResponse);
                 if (jsonResponse.reussit == "true") {
-                    connected();
+                    window.location.pathname = 'TD2/nouvelleDemande.html';
                 }
                 else if (jsonResponse.reussit == "false") {
                     notConnected();
                 }
             }
             
-            function connected() {
-                window.location.pathname = 'TD2/nouvelleDemande.html';
+            async function connexionIntervenant() {
+                console.log("Appel de l'Action: Connexion");
+                let url = './ActionServlet?todo=intervenant-connexion' + "&" + "login=" + document.getElementById('input-login-intervenant').value + "&" + "password=" + document.getElementById('input-password-intervenant').value;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                if (jsonResponse.reussit == "true") {
+                    window.location.pathname = 'TD2/intervention.html';
+                }
+                else if (jsonResponse.reussit == "false") {
+                    notConnected();
+                }
             }
             
             function notConnected() {
                 var divError = document.getElementById("div-error-affichage");
                 let affichageNonConnexion = document.createElement("p");
-                affichageNonConnexion.innerHTML = "Mot de passe ou identifiant incorrects";
+                affichageNonConnexion.innerHTML = "Mot de passe ou identifiant incorrects \br Soyez sur de vous connecter du bon coté";
                 divError.innerHTML = affichageNonConnexion.innerHTML;
             }
             

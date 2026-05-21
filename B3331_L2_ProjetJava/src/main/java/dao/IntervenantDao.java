@@ -5,6 +5,7 @@
 package dao;
 
 import java.util.List;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import metier.modele.Demande;
 import metier.modele.Intervenant;
@@ -27,7 +28,12 @@ public class IntervenantDao {
         String s = "select i from Intervenant i where i.login = :login";
         TypedQuery<Intervenant> query = JpaUtil.obtenirContextePersistance().createQuery(s, Intervenant.class);
         query.setParameter("login", login);
-        return query.getSingleResult();
+        
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     public void update(Intervenant it){

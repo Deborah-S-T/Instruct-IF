@@ -184,7 +184,7 @@ public class Service {
         JpaUtil.creerContextePersistance();
         Intervenant it1 = intervenantDao.findByLogin(login);
         JpaUtil.fermerContextePersistance();
-        if (!it1.getMdp().equals(mdp)) {
+        if (!(it1 != null && it1.getMdp().equals(mdp))) {
             it1 = null;
         }
         return it1;

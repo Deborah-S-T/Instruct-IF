@@ -22,6 +22,7 @@ import web.modele.Action;
 import web.modele.ConsulterListeDemandesAction;
 import web.modele.EleveLogInAction;
 import web.modele.InscrireEleveAction;
+import web.modele.IntervenantLogInAction;
 import web.modele.ListerMatieresAction;
 import web.modele.ListerThemesAction;
 import web.modele.UpdateMatiereDemandeeAction;
@@ -77,6 +78,21 @@ public class ActionServlet extends HttpServlet {
                 
                 HttpSession s = request.getSession();
                 System.out.println("session att eleve id : " + s.getAttribute("eleveId"));
+                break;
+            }
+            
+            case "intervenant-connexion": {
+                System.out.println("case 1");
+                action = new IntervenantLogInAction();
+                action.execute(request);
+                
+                //serialisation
+                System.out.println("intervenantConnection réussit : " + request.getAttribute("reussit").toString());
+                serialisation = new ReussiteSerialisation();
+                serialisation.appliquer(request, response);
+                
+                HttpSession s = request.getSession();
+                System.out.println("session att intervenant id : " + s.getAttribute("intervenantId"));
                 break;
             }
             case "eleve-inscription": {

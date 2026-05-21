@@ -23,7 +23,7 @@ public class EleveLogInAction extends Action {
         
         var mail = request.getParameter("mail");
         var mdp = request.getParameter("password");
-        System.out.println(mail + " " + mdp);
+        System.out.println("mail : " + mail + " mdp : " + mdp);
         Eleve eleve = service.eleveLogIn(mail, mdp);
         
         if (eleve != null) {
