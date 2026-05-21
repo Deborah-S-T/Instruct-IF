@@ -12,6 +12,7 @@ web\vue\ListeDemandesSerialisation.class
 web\modele\HistoriqueDemandeEleveAction.class
 web\modele\StatsNbSoutienAction.class
 web\test\DemandeTest.class
+web\vue\ListerThemesSerialisation.class
 web\modele\StatsProportionDureeAction.class
 web\controleur\ActionServlet.class
 web\modele\StatsMoyenneDureeSoutienAction.class

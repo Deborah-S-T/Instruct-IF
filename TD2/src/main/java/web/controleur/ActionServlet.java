@@ -23,9 +23,11 @@ import web.modele.ConsulterListeDemandesAction;
 import web.modele.EleveLogInAction;
 import web.modele.InscrireEleveAction;
 import web.modele.ListerMatieresAction;
+import web.modele.ListerThemesAction;
 import web.test.DemandeTest;
 import web.vue.ListeDemandesSerialisation;
 import web.vue.ListerMatieresSerialisation;
+import web.vue.ListerThemesSerialisation;
 import web.vue.ReussiteSerialisation;
 import web.vue.Serialisation;
 
@@ -93,6 +95,16 @@ public class ActionServlet extends HttpServlet {
                 
                 //serialisation
                 serialisation = new ListerMatieresSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "lister-themes": {
+                System.out.println("case 4");
+                action = new ListerThemesAction();
+                action.execute(request);
+                
+                //serialisation
+                serialisation = new ListerThemesSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }

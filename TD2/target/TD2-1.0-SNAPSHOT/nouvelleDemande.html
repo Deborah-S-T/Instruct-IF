@@ -9,13 +9,13 @@
         <h1>Nouvelle Demande</h1>
         <div>
             <p>matieres</p>
-            <select id="matiere-select">
+            <select name="matieres" id="select-matiere" onchange="mettreThemes()">
                 <option value="">--Veuillez choisir une option--</option>
             </select>
         </div>
         <div>
             <p>themes</p>
-            <select id="theme-select">
+            <select name="themes" id="select-theme">
                 <option value="">--Veuillez choisir une option--</option>
             </select>
         </div>
@@ -24,7 +24,7 @@
             function initPage() {
                 console.log("Initialisation de la page nouvelle Demande");
                 mettreMatieres();
-                //mettreThemes();
+                mettreThemes();
             };
             
             async function mettreMatieres() {
@@ -45,11 +45,41 @@
                 console.log(jsonResponse);
                 if (jsonResponse) {
                     console.log('Affichage de la liste de matieres');
-                    var select = document.getElementById("matiere-select");
+                    var select = document.getElementById("select-matiere");
+                    select.innerHTML = '<option value="">--Veuillez choisir une option--</option>';
                     for (let m of jsonResponse["matieres"]) {
                         var option = document.createElement("option");
                         option.innerHTML = m["nom"];
                         option.value = m["id"];
+                        select.appendChild(option);
+                    }
+                }
+            }
+            
+            async function mettreThemes() {
+                console.log("Appel de l'Action: Lister les thèmes");
+                let url = './ActionServlet?todo=lister-themes'+ "&matiere=" + document.getElementById('select-matiere').value;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    console.log('Affichage de la liste de thèmes');
+                    var select = document.getElementById("select-theme");
+                    select.innerHTML = '<option value="">--Veuillez choisir une option--</option>';
+                    for (let t of jsonResponse["themes"]) {
+                        var option = document.createElement("option");
+                        option.innerHTML = t["nom"];
+                        option.value = t["id"];
                         select.appendChild(option);
                     }
                 }
