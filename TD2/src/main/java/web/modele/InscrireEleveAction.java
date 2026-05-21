@@ -32,7 +32,7 @@ public class InscrireEleveAction extends Action {
         Eleve eleve = new Eleve(nom, prenom, mail, motDePasse, dateNaissance, Integer.valueOf(classe));
         
         Boolean eleveInscrit = service.inscrireEleve(eleve, codeEtablissement);
-        request.setAttribute("eleveInscrit", eleveInscrit);
+        request.setAttribute("reussit", eleveInscrit);
         
     }
 }

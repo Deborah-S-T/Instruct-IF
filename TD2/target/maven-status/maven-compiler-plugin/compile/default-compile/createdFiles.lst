@@ -17,6 +17,7 @@ web\controleur\ActionServlet.class
 web\modele\StatsMoyenneDureeSoutienAction.class
 web\modele\Action.class
 web\modele\HistoriqueDemandeIntervenantAction.class
+web\vue\ReussiteSerialisation.class
 web\modele\InscrireEleveAction.class
 web\modele\InitialisationAction.class
 web\modele\StatsNbEleveEtablissementAction.class

@@ -17,7 +17,7 @@ public class EleveLogInAction extends Action {
 
     @Override
     public void execute(HttpServletRequest request) {
-        request.setAttribute("eleveConnecte", false);
+        request.setAttribute("reussit", false);
         
         Service service = new Service();
         
@@ -29,7 +29,7 @@ public class EleveLogInAction extends Action {
         if (eleve != null) {
             HttpSession s = request.getSession();
             s.setAttribute("eleveId", eleve.getId());
-            request.setAttribute("eleveConnecte", true);
+            request.setAttribute("reussit", true);
         }
         
     }

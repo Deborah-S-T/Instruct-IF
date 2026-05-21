@@ -23,6 +23,7 @@ import web.modele.EleveLogInAction;
 import web.modele.InscrireEleveAction;
 import web.test.DemandeTest;
 import web.vue.ListeDemandesSerialisation;
+import web.vue.ReussiteSerialisation;
 import web.vue.Serialisation;
 
 /**
@@ -63,13 +64,9 @@ public class ActionServlet extends HttpServlet {
                 action.execute(request);
                 
                 //serialisation
-                response.setContentType("application/json;charset=UTF-8");
-                JsonObjectBuilder jsonLogged = Json.createObjectBuilder();
-                System.out.println("attribut eleveConnecte : " + request.getAttribute("eleveConnecte").toString());
-                jsonLogged.add("eleveConnecte", request.getAttribute("eleveConnecte").toString());
-                PrintWriter out = response.getWriter();
-                out.print(jsonLogged.build().toString());
-                System.out.println("jsonLogged.build() : " + jsonLogged.build().toString());
+                System.out.println("eleveConnection réussit : " + request.getAttribute("reussit").toString());
+                serialisation = new ReussiteSerialisation();
+                serialisation.appliquer(request, response);
                 
                 HttpSession s = request.getSession();
                 System.out.println("session att eleve id : " + s.getAttribute("eleveId"));
@@ -81,13 +78,9 @@ public class ActionServlet extends HttpServlet {
                 action.execute(request);
                 
                 //serialisation
-                response.setContentType("application/json;charset=UTF-8");
-                JsonObjectBuilder jsonSigned = Json.createObjectBuilder();
-                System.out.println("attribut eleveInscrit : " + request.getAttribute("eleveInscrit").toString());
-                jsonSigned.add("eleveInscrit", request.getAttribute("eleveInscrit").toString());
-                PrintWriter out = response.getWriter();
-                out.print(jsonSigned.build().toString());
-                System.out.println("jsonSigned.build() : " + jsonSigned.build().toString());
+                System.out.println("eleveInscription réussit : " + request.getAttribute("reussit").toString());
+                serialisation = new ReussiteSerialisation();
+                serialisation.appliquer(request, response);
                 break;
             }
             default:
