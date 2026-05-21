@@ -24,12 +24,14 @@ import web.modele.EleveLogInAction;
 import web.modele.InscrireEleveAction;
 import web.modele.ListerMatieresAction;
 import web.modele.ListerThemesAction;
+import web.modele.UpdateMatiereDemandeeAction;
 import web.test.DemandeTest;
 import web.vue.ListeDemandesSerialisation;
 import web.vue.ListerMatieresSerialisation;
 import web.vue.ListerThemesSerialisation;
 import web.vue.ReussiteSerialisation;
 import web.vue.Serialisation;
+import web.vue.UpdateMatiereDemandeeSerialisation;
 
 /**
  *
@@ -105,6 +107,16 @@ public class ActionServlet extends HttpServlet {
                 
                 //serialisation
                 serialisation = new ListerThemesSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "update-matiere" : {
+                System.out.println("case 5");
+                action = new UpdateMatiereDemandeeAction();
+                action.execute(request);
+                
+                //serialisation
+                serialisation = new UpdateMatiereDemandeeSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }

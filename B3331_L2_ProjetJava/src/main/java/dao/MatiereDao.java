@@ -25,11 +25,11 @@ public class MatiereDao {
     public Matiere findById(long id){
           String s = "select m from Matiere m where m.id = :unId";
         TypedQuery<Matiere> query = JpaUtil.obtenirContextePersistance().createQuery(s, Matiere.class);
-        query.setParameter("unid", id);
+        query.setParameter("unId", id);
         try {
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
-      }
+    }
 }

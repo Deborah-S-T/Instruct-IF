@@ -15,10 +15,12 @@
         </div>
         <div>
             <p>themes</p>
-            <select name="themes" id="select-theme">
+            <select name="themes" id="select-theme" onchange="updateMatiereValue()">
                 <option value="">--Veuillez choisir une option--</option>
             </select>
         </div>
+        <button id="button-creerDemande" onclick="creerDemande()">Créer la demande</button>
+        <div id="div-erreur"></div>
         
         <script>
             function initPage() {
@@ -82,6 +84,40 @@
                         option.value = t["id"];
                         select.appendChild(option);
                     }
+                }
+            }
+            
+            async function updateMatiereValue() {
+                console.log("Appel de l'Action: Mettre a jour la matiere");
+                let url = './ActionServlet?todo=update-matiere' + '&theme=' + document.getElementById('select-theme').value;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse) {
+                    console.log('Affichage de la nouvelle matiere');
+                    var select = document.getElementById("select-matiere");
+                    select.value = jsonResponse["matiere"];
+                }
+            }
+            
+            function creerDemande() {
+                var theme = document.getElementById("select-theme").value;
+                var erreurDiv = document.getElementById("div-erreur");
+                if (theme == "") {
+                    erreurDiv.innerHTML = "Vous ne pouvez pas creer de demande sans thème";
+                }
+                else {
+                    window.location.pathname = 'TD2/descriptionNouvelleDemande.html';
                 }
             }
             

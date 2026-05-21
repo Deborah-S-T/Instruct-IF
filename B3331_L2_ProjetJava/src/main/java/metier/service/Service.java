@@ -393,4 +393,12 @@ public class Service {
         JpaUtil.fermerContextePersistance();
         return m;
     }
+    
+    public Theme getThemeById(long id) {
+        ThemeDao tdao = new ThemeDao();
+        JpaUtil.creerContextePersistance();
+        Theme t = tdao.findById(id);
+        JpaUtil.fermerContextePersistance();
+        return t;
+    }
 }
