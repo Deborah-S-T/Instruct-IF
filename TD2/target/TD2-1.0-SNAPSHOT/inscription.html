@@ -15,6 +15,7 @@
         <input type="text" id="input-codeEtablissement" value="0691664J" placeholder="Code Établissement (ex: 0691664J)">
     </div>
     <button id="button-submition" type="submit">S'inscrire</button>
+    <div id="div-erreur"></div>
 
     <script>
             function initPage() {
@@ -42,8 +43,24 @@
                             }
                         );
                 console.log("json:",jsonResponse);
-                if (jsonResponse) {
-                    alert("ca fonctionne");
+                if (jsonResponse.reussit == "true") {
+                    window.location.pathname = 'TD2/connexion.html';
+                }
+                else if (jsonResponse.reussit == "false") {
+                    let div = document.getElementById("div-erreur");
+                    div.innerHTML = "";
+                    
+                    let boutonConnexion = document.createElement("button");
+                    boutonConnexion.innerHTML = "Aller à la page de connexion";
+                    boutonConnexion.addEventListener('click', function() {
+                        console.log("Click sur le bouton 'Connexion'");
+                        window.location.pathname = "TD2/connexion.html";
+                    });
+                    
+                    let textErreur = "Erreur d'inscription : \br assurez vous d'avoir le bon code d'établissement \br ou vous avez peut-être déjà un compte";
+                    
+                    div.innerHTML = textErreur;
+                    div.appendChild(boutonConnexion);
                 }
             }
             
