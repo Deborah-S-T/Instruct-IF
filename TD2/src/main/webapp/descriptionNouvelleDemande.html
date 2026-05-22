@@ -73,10 +73,10 @@
                         );
                 console.log("json:",jsonResponse);
                 if (jsonResponse.reussit == "true") {
-                    window.location = './etatDemande.html';
+                    window.location = './etatDemande.html' + "&reussit=true"+ "&theme=" + theme + "&description=" + document.getElementById("textarea-description").value;
                 }
                 else if (jsonResponse.reussit == "false") {
-                    notConnected();
+                    window.location = './etatDemande.html' + "&reussit=false"+ "&theme=" + theme + "&description=" + document.getElementById("textarea-description").value;
                 }
             }
             window.onload = initPage;

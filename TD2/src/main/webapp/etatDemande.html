@@ -1,15 +1,68 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Nouvelle Demande</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Etat demande</h1>
+        <ol id="ol-infos">
+            <li id="li-matiere">Matière : </li>
+            <li id="li-theme">Thème : </li>
+            <li id="li-description">Description : </li>
+        </ol>
+        <div id='div-message'></div>
+ 
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page Nouvelle demande");
+                
+                const params = new URLSearchParams(window.location.search); 
+                let demandeCree = params.get("reussit");
+                let theme = params.get("theme");
+                let description = params.get("description");
+                
+                
+                afficherEtatDemande(demandeCree, theme, description);
+            };
+            
+            async function afficherEtatDemande(demandeCree, theme, description) {
+                console.log("Appel de l'Action: afficherEtatDemande");
+                
+                let url = './ActionServlet?todo=recup-theme-matiere' + "&demandeCree"+ demandeCree + "&theme=" + theme + "&description=" + description;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                if (jsonResponse) {
+                    let matiere = document.getElementById("li-matiere");
+                    let theme = document.getElementById("li-theme");
+                    let description = document.getElementById("li-description");
+
+                    matiere.innerHTML += jsonResponse["matiereNom"];
+                    theme.innerHTML += jsonResponse["themeNom"];
+                    description.innerHTML += jsonResponse["description"];
+                    
+                    if (demandeCree == "true") {
+                        
+                    }
+                    else if (demandeCree == "false") {
+                        
+                    }
+                }
+            }
+            
+            window.onload = initPage;
+        </script>
     </body>
 </html>
