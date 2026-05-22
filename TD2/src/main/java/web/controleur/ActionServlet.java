@@ -25,6 +25,7 @@ import web.modele.InscrireEleveAction;
 import web.modele.IntervenantLogInAction;
 import web.modele.ListerMatieresAction;
 import web.modele.ListerThemesAction;
+import web.modele.LogOutAction;
 import web.modele.UpdateMatiereDemandeeAction;
 import web.modele.mettreProfilAction;
 import web.test.DemandeTest;
@@ -104,6 +105,17 @@ public class ActionServlet extends HttpServlet {
                 
                 //serialisation
                 System.out.println("eleveInscription réussit : " + request.getAttribute("reussit").toString());
+                serialisation = new ReussiteSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "log-out": {
+                System.out.println("case log-out");
+                action = new LogOutAction();
+                action.execute(request);
+                
+                //serialisation
+                System.out.println("déconnexion réussit : " + request.getAttribute("reussit").toString());
                 serialisation = new ReussiteSerialisation();
                 serialisation.appliquer(request, response);
                 break;

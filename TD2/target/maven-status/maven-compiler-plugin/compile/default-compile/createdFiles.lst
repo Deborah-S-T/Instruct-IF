@@ -2,6 +2,7 @@ web\modele\RecupererThemeSelectionneAction.class
 web\modele\CreationDemandeAction.class
 web\modele\CloreDemandeAction.class
 web\modele\ListerThemesAction.class
+web\modele\LogOutAction.class
 web\modele\EleveLogInAction.class
 web\vue\Serialisation.class
 web\modele\ConsulterListeDemandesAction.class

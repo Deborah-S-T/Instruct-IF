@@ -7,6 +7,7 @@
     </head>
     <body>
         <h1>Nouvelle Demande</h1>
+        <button id="button-logOut">Log out</button>
         <button id="button-profil">Profil</button>
         <div>
             <p>matieres</p>
@@ -30,9 +31,35 @@
                     console.log("Click sur le bouton 'Profil'");
                     window.location.pathname = "TD2/profil.html";
                 });
+                document.getElementById('button-logOut').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'log out'");
+                    logOut();
+                });
                 mettreMatieres();
                 mettreThemes();
             };
+            
+            async function logOut() {
+                console.log("Appel de l'Action: log out");
+                let url = './ActionServlet?todo=log-out';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse.reussit == "true") {
+                    console.log('logged out');
+                    window.location.pathname = "TD2/connexion.html";
+                }
+            }
             
             async function mettreMatieres() {
                 console.log("Appel de l'Action: Lister les matieres");
