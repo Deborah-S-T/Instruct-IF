@@ -53,7 +53,8 @@
                 prenom.innerHTML += jsonResponse["prenom"];
                 p.innerHTML = "";
                 
-                for (var d in jsonResponse["histoDemandes"]) {
+                jsonResponse["histoDemandes"].forEach((d) => {
+                    console.log(d);
                     let tr = document.createElement("tr");
                     let date = document.createElement("td");
                     let matiere = document.createElement("td");
@@ -70,7 +71,9 @@
                     tr.appendChild(date);
                     tr.appendChild(matiere);
                     tr.appendChild(detail);
-                }
+                    demandes.appendChild(tr);
+                });
+                
                 if (jsonResponse["histoDemandes"].length == 0)
                 {
                     p.innerHTML = "Il n'y a pas encore de demandes";
