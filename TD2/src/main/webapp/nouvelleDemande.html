@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>nouvelle Demande</title>
+        <title>Nouvelle Demande</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -149,7 +149,7 @@
                     erreurDiv.innerHTML = "Vous ne pouvez pas creer de demande sans thème";
                 }
                 else {
-                    window.location.pathname = 'TD2/descriptionNouvelleDemande.html';
+                    window.location = './descriptionNouvelleDemande.html?theme=' + theme;
                 }
             }
             

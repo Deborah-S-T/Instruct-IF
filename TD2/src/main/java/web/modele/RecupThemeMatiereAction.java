@@ -6,24 +6,26 @@ package web.modele;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import metier.modele.Eleve;
+import metier.modele.Matiere;
+import metier.modele.Theme;
 import metier.service.Service;
 
 /**
  *
  * @author dsteferra
  */
-public class mettreProfilAction extends Action {
+public class RecupThemeMatiereAction extends Action {
     @Override
     public void execute(HttpServletRequest request) {
         Service service = new Service();
-        HttpSession s = request.getSession();
-        System.out.println("eleveid : " + s.getAttribute("eleveId"));
-        Long idEleve = Long.parseLong(s.getAttribute("eleveId").toString());
-        Eleve eleve = service.getEleveById(idEleve);
         
-        System.out.println("Eleve récupéré de la session : " + eleve);
-        request.setAttribute("eleve", eleve);
+        Long themeId = Long.parseLong(request.getParameter("theme"));
+        
+        Theme theme = service.getThemeById(themeId);
+        Matiere matiere = theme.getMatiere();
+        
+        System.out.println("Matiere et Theme récupérés : " + theme + matiere);
+        request.setAttribute("theme", theme);
+        request.setAttribute("matiere", matiere);
     }
 }
