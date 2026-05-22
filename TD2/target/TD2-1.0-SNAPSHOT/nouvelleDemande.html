@@ -7,6 +7,7 @@
     </head>
     <body>
         <h1>Nouvelle Demande</h1>
+        <button id="button-profil">Profil</button>
         <div>
             <p>matieres</p>
             <select name="matieres" id="select-matiere" onchange="mettreThemes()">
@@ -25,6 +26,10 @@
         <script>
             function initPage() {
                 console.log("Initialisation de la page nouvelle Demande");
+                document.getElementById('button-profil').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Profil'");
+                    window.location.pathname = "TD2/profil.html";
+                });
                 mettreMatieres();
                 mettreThemes();
             };

@@ -39,6 +39,17 @@ public class EleveDao {
         return query.getResultList();
     }
     
+    public Eleve findById(long id){
+        String s = "select e from Eleve e where e.id = :unId";
+        TypedQuery<Eleve> query = JpaUtil.obtenirContextePersistance().createQuery(s, Eleve.class);
+        query.setParameter("unId", id);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
 
     
       /*

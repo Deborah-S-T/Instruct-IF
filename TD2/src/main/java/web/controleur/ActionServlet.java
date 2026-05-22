@@ -26,7 +26,9 @@ import web.modele.IntervenantLogInAction;
 import web.modele.ListerMatieresAction;
 import web.modele.ListerThemesAction;
 import web.modele.UpdateMatiereDemandeeAction;
+import web.modele.mettreProfilAction;
 import web.test.DemandeTest;
+import web.vue.EleveSerialisation;
 import web.vue.ListeDemandesSerialisation;
 import web.vue.ListerMatieresSerialisation;
 import web.vue.ListerThemesSerialisation;
@@ -58,16 +60,16 @@ public class ActionServlet extends HttpServlet {
         Serialisation serialisation;
         System.out.println("todo : " + todo);  
         switch(todo) {
-            case "consulter-liste-demandes": {
-                System.out.println("case 1");  
-                action = new ConsulterListeDemandesAction();
-                serialisation = new ListeDemandesSerialisation();
-                action.execute(request);
-                serialisation.appliquer(request, response);
-                break;
-            }
+//            case "consulter-liste-demandes": {
+//                System.out.println("case 1");  
+//                action = new ConsulterListeDemandesAction();
+//                serialisation = new ListeDemandesSerialisation();
+//                action.execute(request);
+//                serialisation.appliquer(request, response);
+//                break;
+//            }
             case "eleve-connexion": {
-                System.out.println("case 1");
+                System.out.println("case eleve-connexion");
                 action = new EleveLogInAction();
                 action.execute(request);
                 
@@ -82,7 +84,7 @@ public class ActionServlet extends HttpServlet {
             }
             
             case "intervenant-connexion": {
-                System.out.println("case 1");
+                System.out.println("case intervenant-connexion");
                 action = new IntervenantLogInAction();
                 action.execute(request);
                 
@@ -96,7 +98,7 @@ public class ActionServlet extends HttpServlet {
                 break;
             }
             case "eleve-inscription": {
-                System.out.println("case 2");
+                System.out.println("case eleve-inscription");
                 action = new InscrireEleveAction();
                 action.execute(request);
                 
@@ -107,7 +109,7 @@ public class ActionServlet extends HttpServlet {
                 break;
             }
             case "lister-matieres": {
-                System.out.println("case 3");
+                System.out.println("case lister-matieres");
                 action = new ListerMatieresAction();
                 action.execute(request);
                 
@@ -117,7 +119,7 @@ public class ActionServlet extends HttpServlet {
                 break;
             }
             case "lister-themes": {
-                System.out.println("case 4");
+                System.out.println("case lister-themes");
                 action = new ListerThemesAction();
                 action.execute(request);
                 
@@ -127,12 +129,22 @@ public class ActionServlet extends HttpServlet {
                 break;
             }
             case "update-matiere" : {
-                System.out.println("case 5");
+                System.out.println("case update-matiere");
                 action = new UpdateMatiereDemandeeAction();
                 action.execute(request);
                 
                 //serialisation
                 serialisation = new UpdateMatiereDemandeeSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "mettre-profil" : {
+                System.out.println("case mettre-profil");
+                action = new mettreProfilAction();
+                action.execute(request);
+                
+                //serialisation
+                serialisation = new EleveSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }

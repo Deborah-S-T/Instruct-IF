@@ -65,12 +65,18 @@ public class EleveSerialisation extends Serialisation{
        JsonArrayBuilder jsonDemandeArray = Json.createArrayBuilder();
        for (Demande d : eleve.getHistoDemande())
        {
-           jsonDemandeArray.add(d.getId());
+           JsonObjectBuilder jsonDemande = Json.createObjectBuilder();
+           jsonDemande.add("id", d.getId());
+           jsonDemande.add("date", d.getDate().toString());
+           jsonDemande.add("matiere", d.getTheme().getMatiere().getNom());
+           
+           jsonDemandeArray.add(jsonDemande);
        }
-       jsonEleve.add("idsHistoDemandes", jsonDemandeArray);
+       jsonEleve.add("histoDemandes", jsonDemandeArray);
        
        PrintWriter out = response.getWriter();
-       out.print(jsonEleve.build().toString());
-       System.out.println(jsonEleve.build().toString());
+       String builtJson = jsonEleve.build().toString();
+       out.print(builtJson);
+       System.out.println("jsonContainer.build() : " + builtJson);
     }
 }

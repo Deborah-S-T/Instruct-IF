@@ -401,4 +401,12 @@ public class Service {
         JpaUtil.fermerContextePersistance();
         return t;
     }
+    
+    public Eleve getEleveById(long id) {
+        EleveDao edao = new EleveDao();
+        JpaUtil.creerContextePersistance();
+        Eleve e = edao.findById(id);
+        JpaUtil.fermerContextePersistance();
+        return e;
+    }
 }

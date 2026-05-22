@@ -1,15 +1,41 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Profil</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <h1>Intervention</h1>
+ 
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page Intervention");
+                //mettreProfil();
+                //document.getElementById('bouton-inscription-eleve').addEventListener('click', function() {
+                //    console.log("Click sur le bouton 'Inscription Eleve'");
+                //    window.location.pathname = 'TD2/inscription.html';
+                //});
+            };
+            
+            async function mettreProfil() {
+                console.log("Appel de l'Action: mettreProfil");
+                let url = './ActionServlet?todo=mettre-profil';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+            }
+            window.onload = initPage;
+        </script>
     </body>
 </html>

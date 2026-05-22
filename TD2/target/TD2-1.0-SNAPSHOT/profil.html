@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Profil</h1>
+        <h2>Eleve</h2>
+        <ol id="ol-infos">
+            <li id="li-nom">Nom : </li>
+            <li id="li-prenom">Prénom : </li>
+            <li id="li-demandes">Anciennes demandes : 
+                <p id="p-pasDeDemandes"></p>
+                <table id="table-demandes"></table>
+            </li>
+        </ol>
+ 
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page Profil");
+                mettreProfil();
+                //document.getElementById('bouton-inscription-eleve').addEventListener('click', function() {
+                //    console.log("Click sur le bouton 'Inscription Eleve'");
+                //    window.location.pathname = 'TD2/inscription.html';
+                //});
+            };
+            
+            async function mettreProfil() {
+                console.log("Appel de l'Action: mettreProfil");
+                let url = './ActionServlet?todo=mettre-profil';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                
+                let nom = document.getElementById("li-nom");
+                let prenom = document.getElementById("li-prenom");
+                let demandes = document.getElementById("table-demandes");
+                let p = document.getElementById("p-pasDeDemandes");
+                
+                nom.innerHTML += jsonResponse["nom"];
+                prenom.innerHTML += jsonResponse["prenom"];
+                p.innerHTML = "";
+                
+                for (var d in jsonResponse["histoDemandes"]) {
+                    let tr = document.createElement("tr");
+                    let date = document.createElement("td");
+                    let matiere = document.createElement("td");
+                    let detail = document.createElement("td");
+                    
+                    date.innerHTML = d["date"];
+                    matiere.innerHTML = d["matiere"];
+                    detail.innerHTML = "DETAILS";
+                    detail.addEventListener('click', function() {
+                        console.log("Click sur le les détails");
+                        window.location.pathname = 'TD2/inscription.html?demande=' + d["id"];
+                    });
+                    
+                    tr.appendChild(date);
+                    tr.appendChild(matiere);
+                    tr.appendChild(detail);
+                }
+                if (jsonResponse["histoDemandes"].length == 0)
+                {
+                    p.innerHTML = "Il n'y a pas encore de demandes";
+                }
+            }
+            window.onload = initPage;
+        </script>
+    </body>
+</html>
