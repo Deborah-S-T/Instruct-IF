@@ -31,6 +31,7 @@ import web.modele.RecupThemeMatiereAction;
 import web.modele.UpdateMatiereDemandeeAction;
 import web.modele.mettreProfilAction;
 import web.test.DemandeTest;
+import web.vue.CreationDemandeSerialisation;
 import web.vue.EleveSerialisation;
 import web.vue.ListeDemandesSerialisation;
 import web.vue.ListerMatieresSerialisation;
@@ -180,7 +181,7 @@ public class ActionServlet extends HttpServlet {
                 
                 //serialisation
                 System.out.println("creation demande réussit : " + request.getAttribute("reussit").toString());
-                serialisation = new ReussiteSerialisation();
+                serialisation = new CreationDemandeSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }

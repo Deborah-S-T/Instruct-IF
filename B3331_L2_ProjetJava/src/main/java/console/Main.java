@@ -19,7 +19,7 @@ import metier.service.Service;
 public class Main {
 
     public static void main(String[] args) {
-        JpaUtil.creerFabriquePersistance();
+        /*JpaUtil.creerFabriquePersistance();
         Service service = new Service();
         
         //Initialisation de l'application : Ajout des thèmes, matières et intervenants
@@ -63,6 +63,6 @@ public class Main {
         
         Long stat_nb_eleve_etablissement = service.statsNbEleveEtablissement(liste_etablissements.get(0));
            
-        JpaUtil.fermerFabriquePersistance();
+        JpaUtil.fermerFabriquePersistance();*/
     }
 }

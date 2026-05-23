@@ -6,6 +6,7 @@ package web.modele;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import metier.modele.Demande;
 import metier.modele.Eleve;
 import metier.modele.Matiere;
 import metier.modele.Theme;
@@ -37,8 +38,25 @@ public class CreationDemandeAction extends Action {
         
         boolean demandeCree = service.creationDemande(description, theme, eleve, lien);
         
-        System.out.println("Demande crée : " + demandeCree);
+       
+        String idDemande = "null";
+        String lienDemande = "null";
+        if (demandeCree) {
+            for (Demande d : eleve.getHistoDemande()) {
+                System.out.println("demandes : " + d);
+                if (!(d.getTermine())) {
+                    if (d.getDescription().equals(description) && d.getTheme().getId().equals(theme.getId()) && d.getLien().equals(lien)) {
+                        idDemande = d.getId().toString();
+                        lienDemande = d.getLien();
+                    }
+                }
+            }
+        }
+        
+        System.out.println("Demande crée : " + demandeCree + " id : " + idDemande);
         request.setAttribute("reussit", demandeCree);
+        request.setAttribute("idDemande", idDemande);
+        request.setAttribute("lienDemande", lienDemande);
     }
     
 }

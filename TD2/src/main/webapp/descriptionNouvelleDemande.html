@@ -58,7 +58,8 @@
             
             async function creerDemande(theme) {
                 console.log("Appel de l'Action: creer Demande");
-                let url = './ActionServlet?todo=creer-demande'+ "&theme=" + theme + "&description=" + document.getElementById("textarea-description").value;
+                let description = document.getElementById("textarea-description").value;
+                let url = './ActionServlet?todo=creer-demande'+ "&theme=" + theme + "&description=" + description;
                 let jsonResponse = await fetch(url)
                         .then(
                             function(httpResponse) {
@@ -73,10 +74,10 @@
                         );
                 console.log("json:",jsonResponse);
                 if (jsonResponse.reussit == "true") {
-                    window.location = './etatDemande.html' + "&reussit=true"+ "&theme=" + theme + "&description=" + document.getElementById("textarea-description").value;
+                    window.location = './etatDemande.html' + "?reussit=true" + "&idDemande=" + jsonResponse.idDemande + "&lienDemande=" + jsonResponse.lienDemande + "&theme=" + theme + "&description=" + description;
                 }
                 else if (jsonResponse.reussit == "false") {
-                    window.location = './etatDemande.html' + "&reussit=false"+ "&theme=" + theme + "&description=" + document.getElementById("textarea-description").value;
+                    window.location = './etatDemande.html' + "?reussit=false" + "&idDemande=" + jsonResponse.idDemande + "&lienDemande=" + jsonResponse.lienDemande + "&theme=" + theme + "&description=" + description;
                 }
             }
             window.onload = initPage;

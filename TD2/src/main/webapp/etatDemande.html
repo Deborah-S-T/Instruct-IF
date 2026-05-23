@@ -7,13 +7,15 @@
     </head>
     <body>
         <h1>Etat demande</h1>
-        <ol id="ol-infos">
+        <a href="nouvelleDemande.html">nouvelle demande</a>
+        <a href="profil.html">profil</a>
+        <ul id="ol-infos">
             <li id="li-matiere">Matière : </li>
             <li id="li-theme">Thème : </li>
             <li id="li-description">Description : </li>
-        </ol>
+        </ul>
         <div id='div-message'></div>
- 
+        
         <script>
             function initPage() {
                 console.log("Initialisation de la page Nouvelle demande");
@@ -22,15 +24,16 @@
                 let demandeCree = params.get("reussit");
                 let theme = params.get("theme");
                 let description = params.get("description");
+                let idDemande = params.get("idDemande");
+                let lienDemande = params.get("lienDemande");
                 
-                
-                afficherEtatDemande(demandeCree, theme, description);
+                afficherEtatDemande(demandeCree, theme, description, idDemande, lienDemande);
             };
             
-            async function afficherEtatDemande(demandeCree, theme, description) {
+            async function afficherEtatDemande(demandeCree, theme, description, idDemande, lienDemande) {
                 console.log("Appel de l'Action: afficherEtatDemande");
                 
-                let url = './ActionServlet?todo=recup-theme-matiere' + "&demandeCree"+ demandeCree + "&theme=" + theme + "&description=" + description;
+                let url = './ActionServlet?todo=recup-theme-matiere' + "&demandeCree"+ demandeCree + "&theme=" + theme;
                 let jsonResponse = await fetch(url)
                         .then(
                             function(httpResponse) {
@@ -47,17 +50,18 @@
                 if (jsonResponse) {
                     let matiere = document.getElementById("li-matiere");
                     let theme = document.getElementById("li-theme");
-                    let description = document.getElementById("li-description");
+                    let liDescription = document.getElementById("li-description");
 
                     matiere.innerHTML += jsonResponse["matiereNom"];
                     theme.innerHTML += jsonResponse["themeNom"];
-                    description.innerHTML += jsonResponse["description"];
+                    liDescription.innerHTML += description;
                     
+                    let message = document.getElementById("div-message");
                     if (demandeCree == "true") {
-                        
+                        message.innerHTML = "Un intervenant a été trouvé <br> -> RDV sur ce lien <br>" + lienDemande;
                     }
                     else if (demandeCree == "false") {
-                        
+                        message.innerHTML = "Désolé, pas d'intervenant disponible... Réessayez plus tard !";
                     }
                 }
             }
