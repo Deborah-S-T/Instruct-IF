@@ -21,7 +21,12 @@ public class IntervenantDao {
         TypedQuery<Intervenant> query = JpaUtil.obtenirContextePersistance().createQuery(s, Intervenant.class);
         query.setParameter("niveau", niveauEleve);
         query.setMaxResults(1);
-        return query.getSingleResult();
+        //return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     public Intervenant findByLogin(String login){

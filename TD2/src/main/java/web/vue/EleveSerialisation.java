@@ -15,6 +15,7 @@ import java.util.List;
 import metier.modele.Demande;
 import metier.modele.Eleve;
 import metier.modele.Etablissement;
+import metier.service.Service;
 
 /**
  * private Long id;
@@ -50,6 +51,7 @@ public class EleveSerialisation extends Serialisation{
     @Override
     public void appliquer(HttpServletRequest request, HttpServletResponse response) throws IOException {
        Eleve eleve = (Eleve) request.getAttribute("eleve");
+       List<Demande> demandes = (List<Demande>) request.getAttribute("demandes");
        
        JsonObjectBuilder jsonEleve = Json.createObjectBuilder();
        
@@ -63,6 +65,7 @@ public class EleveSerialisation extends Serialisation{
        
        jsonEleve.add("idEtablissement", eleve.getEtablissement().getId().toString());
        JsonArrayBuilder jsonDemandeArray = Json.createArrayBuilder();
+       //for (Demande d : demandes)
        for (Demande d : eleve.getHistoDemande())
        {
            JsonObjectBuilder jsonDemande = Json.createObjectBuilder();

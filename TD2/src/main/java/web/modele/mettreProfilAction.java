@@ -7,6 +7,7 @@ package web.modele;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import metier.modele.Demande;
 import metier.modele.Eleve;
 import metier.service.Service;
 
@@ -22,8 +23,10 @@ public class mettreProfilAction extends Action {
         System.out.println("eleveid : " + s.getAttribute("eleveId"));
         Long idEleve = Long.parseLong(s.getAttribute("eleveId").toString());
         Eleve eleve = service.getEleveById(idEleve);
+        List<Demande> demandes = service.historiqueDemandeEleve(eleve);
         
-        System.out.println("Eleve récupéré de la session : " + eleve);
+        System.out.println("Eleve récupéré de la session : " + eleve + " liste demandes : " + demandes);
         request.setAttribute("eleve", eleve);
+        request.setAttribute("demandes", demandes);
     }
 }
