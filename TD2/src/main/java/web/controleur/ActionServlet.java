@@ -33,11 +33,13 @@ import web.modele.RecupDemandeAction;
 import web.modele.RecupThemeMatiereAction;
 import web.modele.UpdateMatiereDemandeeAction;
 import web.modele.MettreProfilAction;
+import web.modele.MettreProfilIntervenantAction;
 import web.test.DemandeTest;
 import web.vue.CreationDemandeSerialisation;
 import web.vue.DemandeSerialisation;
 import web.vue.EleveSerialisation;
 import web.vue.InfoIntervenantSerialisation;
+import web.vue.IntervenantSerialisation;
 import web.vue.ListeDemandesSerialisation;
 import web.vue.ListerMatieresSerialisation;
 import web.vue.ListerThemesSerialisation;
@@ -217,6 +219,16 @@ public class ActionServlet extends HttpServlet {
                 
                 //serialisation
                 serialisation = new ReussiteSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "mettre-profil-intervenant" : {
+                System.out.println("case mettre-profil-intervenant");
+                action = new MettreProfilIntervenantAction();
+                action.execute(request);
+                
+                //serialisation
+                serialisation = new IntervenantSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }

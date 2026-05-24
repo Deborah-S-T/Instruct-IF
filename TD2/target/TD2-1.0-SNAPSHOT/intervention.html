@@ -24,7 +24,7 @@
                 });
                 document.getElementById('button-profil').addEventListener('click', function() {
                     console.log("Click sur le bouton 'Profil'");
-                    window.location = "./profil.html";
+                    window.location = "./profil.html" + "?intervenant=true" + "&eleve=false" + "idEleve=null";
                 });
             };
             
@@ -73,7 +73,7 @@
                     buttonEleve.innerHTML = "Détail Eleve";
                     buttonEleve.addEventListener('click', function() {
                         console.log("Click sur le bouton 'Eleve'");
-                        window.location = "./profil.html";
+                        window.location = "./profil.html" + "?intervenant=true" + "&eleve=true" + "&idEleve=" + jsonResponse.eleveId;
                     });
                     
                     let p = document.createElement("p");

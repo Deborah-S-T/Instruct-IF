@@ -6,30 +6,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Profil</h1>
-        <button id="button-logOut">Log out</button>
-        <ul id="ul-infos">
-            <li id="li-nom">Nom : </li>
-            <li id="li-prenom">Prénom : </li>
-            <li id="li-demandes">Anciennes demandes : 
-                <p id="p-pasDeDemandes"></p>
-                <table id="table-demandes"></table>
-            </li>
-        </ul>
+        <h1 id="h1-titre">Profil</h1>
+        <ul id="ul-infos"></ul>
+        
  
         <script>
             function initPage() {
                 console.log("Initialisation de la page Profil");
-                mettreProfil();
-                document.getElementById('button-logOut').addEventListener('click', function() {
-                    console.log("Click sur le bouton 'log out'");
-                    logOut();
-                });
+                
+                const params = new URLSearchParams(window.location.search); 
+                let intervenant = params.get("intervenant");
+                let eleve = params.get("eleve");
+                let idEleve = params.get("idEleve");
+                
+                if (eleve == "true") {
+                    mettreProfilEleve(idEleve);
+                }
+                else {
+                    mettreProfilIntervenant();
+                }
             };
             
-            async function mettreProfil() {
-                console.log("Appel de l'Action: mettreProfil");
-                let url = './ActionServlet?todo=mettre-profil';
+            async function mettreProfilEleve(idEleve) {
+                console.log("Appel de l'Action: mettreProfilEleve");
+                let url = './ActionServlet?todo=mettre-profil' + "&id=" + idEleve;
                 let jsonResponse = await fetch(url)
                         .then(
                             function(httpResponse) {
@@ -43,23 +43,149 @@
                             }
                         );
                 console.log("json:",jsonResponse);
+                let ul = document.getElementById("ul-infos");
                 
-                let nom = document.getElementById("li-nom");
-                let prenom = document.getElementById("li-prenom");
-                let demandes = document.getElementById("table-demandes");
-                let p = document.getElementById("p-pasDeDemandes");
+                if (idEleve == "null") {
+                    
+                    let logOutButton = document.createElement("button");
+                    logOutButton.innerHTML = "Log out";
+                    document.body.insertBefore(logOutButton, ul);
+                    logOutButton.addEventListener('click', function() {
+                        console.log("Click sur le bouton 'log out'");
+                        logOut();
+                    });
+                    
+                    let nom = document.createElement("li");
+                    nom.innerHTML = "Nom : ";
+                    let prenom = document.createElement("li");
+                    prenom.innerHTML = "Prénom : ";
+                    let lidemandes = document.createElement("li");
+                    lidemandes.innerHTML = "Anciennes demandes : ";
+                    
+                    let p = document.createElement("p");
+                    lidemandes.appendChild(p);
+                    let demandes = document.createElement("table");
+                    lidemandes.appendChild(demandes);
+                    
+                    ul.appendChild(nom);
+                    ul.appendChild(prenom);
+                    ul.appendChild(lidemandes);
+
+                    nom.innerHTML += jsonResponse["nom"];
+                    prenom.innerHTML += jsonResponse["prenom"];
+                    p.innerHTML = "";
+
+                    jsonResponse["histoDemandes"].forEach((d) => {
+                        console.log(d);
+                        let tr = document.createElement("tr");
+                        let date = document.createElement("td");
+                        let matiere = document.createElement("td");
+                        let detail = document.createElement("td");
+
+                        date.innerHTML = d["date"];
+                        matiere.innerHTML = d["matiere"];
+                        detail.innerHTML = "DETAILS";
+                        detail.addEventListener('click', function() {
+                            console.log("Click sur le les détails");
+                            window.location = 'detailsDemande.html?demande=' + d["id"];
+                        });
+
+                        tr.appendChild(date);
+                        tr.appendChild(matiere);
+                        tr.appendChild(detail);
+                        demandes.appendChild(tr);
+                    });
+
+                    if (jsonResponse["histoDemandes"].length == 0)
+                    {
+                        p.innerHTML = "Il n'y a pas encore de demandes";
+                    }
+                }
+                else {
+                    
+                    let h1Titre = document.getElementById("h1-titre");
+                    h1Titre.innerHTML += " Eleve";
+                    
+                    let dateNaissance = document.createElement("li");
+                    dateNaissance.innerHTML = "Date de naissance : ";
+                    let nomEleve = document.createElement("li");
+                    nomEleve.innerHTML = "Nom : ";
+                    let prenomEleve = document.createElement("li");
+                    prenomEleve.innerHTML = "Prénom : ";
+                    let mail = document.createElement("li");
+                    mail.innerHTML = "Mail : ";
+                    let codeEtablissement = document.createElement("li");
+                    codeEtablissement.innerHTML = "Code d'établissement : ";
+                    let classe = document.createElement("li");
+                    classe.innerHTML = "Classe : ";
+                    
+                    dateNaissance.innerHTML += jsonResponse["dateNaissance"];
+                    nomEleve.innerHTML += jsonResponse["nom"];
+                    prenomEleve.innerHTML += jsonResponse["prenom"];
+                    mail.innerHTML += jsonResponse["mail"];
+                    codeEtablissement.innerHTML += jsonResponse["codeEtablissement"];
+                    classe.innerHTML += jsonResponse["classe"];
+                    
+                    ul.appendChild(dateNaissance);
+                    ul.appendChild(nomEleve);
+                    ul.appendChild(prenomEleve);
+                    ul.appendChild(mail);
+                    ul.appendChild(codeEtablissement);
+                    ul.appendChild(classe);
+                }
+            }
+            
+            async function mettreProfilIntervenant() {
+                console.log("Appel de l'Action: mettreProfilIntervenant");
+                let url = './ActionServlet?todo=mettre-profil-intervenant';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                let ul = document.getElementById("ul-infos");
                 
-                nom.innerHTML += jsonResponse["nom"];
-                prenom.innerHTML += jsonResponse["prenom"];
+                
+                    
+                let logOutButton = document.createElement("button");
+                logOutButton.innerHTML = "Log out";
+                document.body.insertBefore(logOutButton, ul);
+                logOutButton.addEventListener('click', function() {
+                    console.log("Click sur le bouton 'log out'");
+                    logOut();
+                });
+
+                let login = document.createElement("li");
+                login.innerHTML = "Login : ";
+                let lidemandes = document.createElement("li");
+                lidemandes.innerHTML = "Anciennes interventions terminées : " + jsonResponse.nbIntervention;
+
+                let p = document.createElement("p");
+                lidemandes.appendChild(p);
+                let demandes = document.createElement("table");
+                lidemandes.appendChild(demandes);
+
+                ul.appendChild(login);
+                ul.appendChild(lidemandes);
+
+                login.innerHTML += jsonResponse["login"];
                 p.innerHTML = "";
-                
+
                 jsonResponse["histoDemandes"].forEach((d) => {
                     console.log(d);
                     let tr = document.createElement("tr");
                     let date = document.createElement("td");
                     let matiere = document.createElement("td");
                     let detail = document.createElement("td");
-                    
+
                     date.innerHTML = d["date"];
                     matiere.innerHTML = d["matiere"];
                     detail.innerHTML = "DETAILS";
@@ -67,17 +193,18 @@
                         console.log("Click sur le les détails");
                         window.location = 'detailsDemande.html?demande=' + d["id"];
                     });
-                    
+
                     tr.appendChild(date);
                     tr.appendChild(matiere);
                     tr.appendChild(detail);
                     demandes.appendChild(tr);
                 });
-                
+
                 if (jsonResponse["histoDemandes"].length == 0)
                 {
-                    p.innerHTML = "Il n'y a pas encore de demandes";
+                    p.innerHTML = "Il n'y a pas encore d'intervention.";
                 }
+                
             }
             
             async function logOut() {

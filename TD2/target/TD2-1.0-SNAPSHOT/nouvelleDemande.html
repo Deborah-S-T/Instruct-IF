@@ -29,7 +29,7 @@
                 console.log("Initialisation de la page nouvelle Demande");
                 document.getElementById('button-profil').addEventListener('click', function() {
                     console.log("Click sur le bouton 'Profil'");
-                    window.location = "./profil.html";
+                    window.location = "./profil.html" + "?intervenant=false" + "&eleve=true" + "&idEleve=null";
                 });
                 document.getElementById('button-logOut').addEventListener('click', function() {
                     console.log("Click sur le bouton 'log out'");

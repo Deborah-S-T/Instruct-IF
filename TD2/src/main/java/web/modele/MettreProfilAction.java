@@ -19,14 +19,28 @@ public class MettreProfilAction extends Action {
     @Override
     public void execute(HttpServletRequest request) {
         Service service = new Service();
-        HttpSession s = request.getSession();
-        System.out.println("eleveid : " + s.getAttribute("eleveId"));
-        Long idEleve = Long.parseLong(s.getAttribute("eleveId").toString());
-        Eleve eleve = service.getEleveById(idEleve);
-        List<Demande> demandes = service.historiqueDemandeEleve(eleve);
         
-        System.out.println("Eleve récupéré de la session : " + eleve + " liste demandes : " + demandes);
-        request.setAttribute("eleve", eleve);
-        request.setAttribute("demandes", demandes);
+        String id = request.getParameter("id");
+        System.out.println("idEleve donne en parametre par le truc qui appelle profil : " + id);
+        
+        if (id.equals("null")) {
+            HttpSession s = request.getSession();
+            System.out.println("eleveid : " + s.getAttribute("eleveId"));
+            Long idEleve = Long.parseLong(s.getAttribute("eleveId").toString());
+            Eleve eleve = service.getEleveById(idEleve);
+            List<Demande> demandes = service.historiqueDemandeEleve(eleve);
+
+            System.out.println("Eleve récupéré de la session : " + eleve + " liste demandes : " + demandes);
+            request.setAttribute("eleve", eleve);
+            request.setAttribute("demandes", demandes);    
+        }
+        else {
+            Eleve eleve = service.getEleveById(Long.parseLong(id));
+            List<Demande> demandes = service.historiqueDemandeEleve(eleve);
+
+            System.out.println("Eleve récupéré de la session : " + eleve + " liste demandes : " + demandes);
+            request.setAttribute("eleve", eleve);
+            request.setAttribute("demandes", demandes);
+        }
     }
 }

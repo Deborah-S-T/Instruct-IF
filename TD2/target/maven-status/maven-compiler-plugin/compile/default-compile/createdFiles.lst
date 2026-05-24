@@ -26,7 +26,9 @@ web\modele\RecupThemeMatiereAction.class
 web\vue\ReussiteSerialisation.class
 web\modele\InscrireEleveAction.class
 web\modele\UpdateMatiereDemandeeAction.class
+web\vue\IntervenantSerialisation.class
 web\modele\InitialisationAction.class
+web\modele\MettreProfilIntervenantAction.class
 web\modele\StatsNbEleveEtablissementAction.class
 web\vue\ListerMatieresSerialisation.class
 web\vue\RecupThemeMatiereSerialisation.class
