@@ -15,7 +15,7 @@ import metier.service.Service;
  *
  * @author dsteferra
  */
-public class mettreProfilAction extends Action {
+public class MettreProfilAction extends Action {
     @Override
     public void execute(HttpServletRequest request) {
         Service service = new Service();

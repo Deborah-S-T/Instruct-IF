@@ -2,6 +2,7 @@ web\modele\CreationDemandeAction.class
 web\modele\CloreDemandeAction.class
 web\modele\ListerThemesAction.class
 web\modele\LogOutAction.class
+web\vue\InfoIntervenantSerialisation.class
 web\modele\EleveLogInAction.class
 web\vue\CreationDemandeSerialisation.class
 web\vue\Serialisation.class
@@ -25,12 +26,13 @@ web\modele\RecupThemeMatiereAction.class
 web\vue\ReussiteSerialisation.class
 web\modele\InscrireEleveAction.class
 web\modele\UpdateMatiereDemandeeAction.class
-web\modele\mettreProfilAction.class
 web\modele\InitialisationAction.class
 web\modele\StatsNbEleveEtablissementAction.class
 web\vue\ListerMatieresSerialisation.class
 web\vue\RecupThemeMatiereSerialisation.class
 web\modele\IntervenantLogInAction.class
 web\test\ServiceTest.class
+web\modele\InfoInterventionAction.class
 web\vue\DemandeSerialisation.class
 web\modele\GetListeEtablissementsAction.class
+web\modele\MettreProfilAction.class

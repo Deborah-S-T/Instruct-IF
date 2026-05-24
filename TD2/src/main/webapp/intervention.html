@@ -6,21 +6,31 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Intervention</h1>
- 
+        <h1>Nouvelle demande reçue</h1>
+        <button id="button-logOut">Log out</button>
+        <button id="button-profil">Profil</button>
+        <div id="div-demande">
+            <ul id="ul-infos"></ul>
+        </div>
+        <div id="div-message"></div>
+        
         <script>
             function initPage() {
                 console.log("Initialisation de la page Intervention");
-                //mettreProfil();
-                //document.getElementById('bouton-inscription-eleve').addEventListener('click', function() {
-                //    console.log("Click sur le bouton 'Inscription Eleve'");
-                //    window.location.pathname = 'TD2/inscription.html';
-                //});
+                mettreInfos();
+                document.getElementById('button-logOut').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'log out'");
+                    logOut();
+                });
+                document.getElementById('button-profil').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'Profil'");
+                    window.location = "./profil.html";
+                });
             };
             
-            async function mettreProfil() {
-                console.log("Appel de l'Action: mettreProfil");
-                let url = './ActionServlet?todo=mettre-profil';
+            async function mettreInfos() {
+                console.log("Appel de l'Action: mettreInfos");
+                let url = './ActionServlet?todo=mettre-infosIntervention';
                 let jsonResponse = await fetch(url)
                         .then(
                             function(httpResponse) {
@@ -34,7 +44,112 @@
                             }
                         );
                 console.log("json:",jsonResponse);
+
+                
+                let divDemande = document.getElementById("div-demande");
+                if (jsonResponse.dispo) {
+                    divDemande.innerHTML = "";
+                    let message = document.getElementById("div-message");
+                    message.innerHTML = "Aucune nouvelle demande actuellement.";
+                }
+                else {
+                    let ul = document.getElementById("ul-infos");
+                    let liMatiere = document.createElement("li");
+                    let liTheme = document.createElement("li");
+                    let liDescription = document.createElement("li");
+                    let liLien = document.createElement("li");
+                    
+                    liMatiere.innerHTML = "Matière : " + jsonResponse["matiere"];
+                    liTheme.innerHTML = "Theme : " + jsonResponse["theme"];
+                    liDescription.innerHTML = "Description : " + jsonResponse["description"];
+                    liLien.innerHTML = "Lien : " + jsonResponse["lien"];
+                    
+                    ul.appendChild(liMatiere);
+                    ul.appendChild(liTheme);
+                    ul.appendChild(liDescription);
+                    ul.appendChild(liLien);
+                    
+                    let buttonEleve = document.createElement("button");
+                    buttonEleve.innerHTML = "Détail Eleve";
+                    buttonEleve.addEventListener('click', function() {
+                        console.log("Click sur le bouton 'Eleve'");
+                        window.location = "./profil.html";
+                    });
+                    
+                    let p = document.createElement("p");
+                    p.innerHTML = "Bilan après l'intervention à rédiger pour l'élève :";
+                    let textarea = document.createElement("textarea");
+                    textarea.placeholder = "De grands progrès, exercices de bases maîtrisés.";
+                    
+                    let buttonClore = document.createElement("button");
+                    buttonClore.innerHTML = "Clore l'intervention";
+                    buttonClore.disable = true;
+                    buttonClore.addEventListener('click', function() {
+                        console.log("Click sur le bouton 'Clore'");
+                        cloreDemande(input.value, textarea.innerHTML);
+                    });
+                    
+                    let pduree = document.createElement("p");
+                    pduree.innerHTML = "Durée de l'intervention en minutes :";
+                    let input = document.createElement("input");
+                    input.placeholder = "120";
+                    input.addEventListener(('change'), function() {
+                        if (input.value != "") {
+                            buttonClore.disable = false;
+                        }
+                    });
+                    
+                    divDemande.appendChild(buttonEleve);
+                    divDemande.appendChild(p);
+                    divDemande.appendChild(textarea);
+                    divDemande.appendChild(pduree);
+                    divDemande.appendChild(input);
+                    divDemande.appendChild(buttonClore);
+                    
+                }
             }
+            
+            async function logOut() {
+                console.log("Appel de l'Action: log out");
+                let url = './ActionServlet?todo=log-out';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse.reussit == "true") {
+                    console.log('logged out');
+                    window.location = "./connexion.html";
+                }
+            }
+            
+            async function cloreDemande(duree, bilan) {
+                console.log("Appel de l'Action: clore demande");
+                let url = './ActionServlet?todo=clore-demande' + "&duree=" + duree + "&bilan=" + bilan;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                window.location.reload();
+            }
+            
             window.onload = initPage;
         </script>
     </body>

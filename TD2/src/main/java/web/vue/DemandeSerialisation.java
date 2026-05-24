@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import metier.modele.Demande;
 
 /**
@@ -26,7 +27,9 @@ public class DemandeSerialisation extends Serialisation {
        jsonContainer.add("id", demande.getId());
        jsonContainer.add("matiere", demande.getTheme().getMatiere().getNom());
        jsonContainer.add("theme", demande.getTheme().getNom());
-       jsonContainer.add("login", demande.getIntervenant().getLogin());
+       jsonContainer.add("loginInter", demande.getIntervenant().getLogin());
+       jsonContainer.add("nomEleve", demande.getEleve().getNom());
+       jsonContainer.add("prenomEleve", demande.getEleve().getPrenom());
        if (demande.getDuree() == null) {
            jsonContainer.add("duree", "null");
        }
@@ -40,7 +43,7 @@ public class DemandeSerialisation extends Serialisation {
        else {
            jsonContainer.add("bilan", demande.getBilan());
        }
-       
+       jsonContainer.add("description", demande.getDescription());
        
        PrintWriter out = response.getWriter();
        String builtJson = jsonContainer.build().toString();

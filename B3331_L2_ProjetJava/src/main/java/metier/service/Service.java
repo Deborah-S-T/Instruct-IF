@@ -417,4 +417,12 @@ public class Service {
         JpaUtil.fermerContextePersistance();
         return d;
     }
+    
+    public Intervenant getIntervenantById(long id) {
+        IntervenantDao idao = new IntervenantDao();
+        JpaUtil.creerContextePersistance();
+        Intervenant i = idao.findById(id);
+        JpaUtil.fermerContextePersistance();
+        return i;
+    }
 }

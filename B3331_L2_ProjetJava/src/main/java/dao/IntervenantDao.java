@@ -69,5 +69,16 @@ public class IntervenantDao {
         query.setParameter("id", intId);
         return query.getResultList();
     }
+    
+    public Intervenant findById(long id){
+        String s = "select i from Intervenant i where i.id = :unId";
+        TypedQuery<Intervenant> query = JpaUtil.obtenirContextePersistance().createQuery(s, Intervenant.class);
+        query.setParameter("unId", id);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
 }
