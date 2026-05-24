@@ -409,4 +409,12 @@ public class Service {
         JpaUtil.fermerContextePersistance();
         return e;
     }
+    
+    public Demande getDemandeById(long id) {
+        DemandeDao ddao = new DemandeDao();
+        JpaUtil.creerContextePersistance();
+        Demande d = ddao.findById(id);
+        JpaUtil.fermerContextePersistance();
+        return d;
+    }
 }

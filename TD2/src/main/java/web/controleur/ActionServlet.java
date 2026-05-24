@@ -27,11 +27,13 @@ import web.modele.IntervenantLogInAction;
 import web.modele.ListerMatieresAction;
 import web.modele.ListerThemesAction;
 import web.modele.LogOutAction;
+import web.modele.RecupDemandeAction;
 import web.modele.RecupThemeMatiereAction;
 import web.modele.UpdateMatiereDemandeeAction;
 import web.modele.mettreProfilAction;
 import web.test.DemandeTest;
 import web.vue.CreationDemandeSerialisation;
+import web.vue.DemandeSerialisation;
 import web.vue.EleveSerialisation;
 import web.vue.ListeDemandesSerialisation;
 import web.vue.ListerMatieresSerialisation;
@@ -182,6 +184,16 @@ public class ActionServlet extends HttpServlet {
                 //serialisation
                 System.out.println("creation demande réussit : " + request.getAttribute("reussit").toString());
                 serialisation = new CreationDemandeSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "recup-demande" : {
+                System.out.println("case recup-demande");
+                action = new RecupDemandeAction();
+                action.execute(request);
+                
+                //serialisation
+                serialisation = new DemandeSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }

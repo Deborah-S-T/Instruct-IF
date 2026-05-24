@@ -2,9 +2,11 @@ C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\CreationDemandeAction.
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\StatsNbEleveAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\EleveLogInAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\GetListeEtablissementsAction.java
+C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\RecupDemandeAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\ConsulterListeDemandesAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\ListerThemesSerialisation.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\RecupThemeMatiereSerialisation.java
+C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\DemandeSerialisation.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\UpdateMatiereDemandeeSerialisation.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\StatsNbSoutienAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\ReussiteSerialisation.java
@@ -24,7 +26,6 @@ C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\IntervenantLogInAction
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\RecupThemeMatiereAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\ListerMatieresSerialisation.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\HistoriqueDemandeEleveAction.java
-C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\RecupererThemeSelectionneAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\InscrireEleveAction.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\vue\ListeDemandesSerialisation.java
 C:\Temp\3IF-DASI\Instruct-IF\TD2\src\main\java\web\modele\CloreDemandeAction.java

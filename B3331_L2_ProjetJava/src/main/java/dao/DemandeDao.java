@@ -4,6 +4,8 @@
  */
 package dao;
 
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import metier.modele.Demande;
 
 
@@ -14,5 +16,16 @@ public class DemandeDao {
     
     public void update(Demande dem){
         JpaUtil.obtenirContextePersistance().merge(dem);
+    }
+    
+    public Demande findById(long id){
+        String s = "select d from Demande d where d.id = :unId";
+        TypedQuery<Demande> query = JpaUtil.obtenirContextePersistance().createQuery(s, Demande.class);
+        query.setParameter("unId", id);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

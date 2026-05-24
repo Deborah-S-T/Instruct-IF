@@ -1,4 +1,3 @@
-web\modele\RecupererThemeSelectionneAction.class
 web\modele\CreationDemandeAction.class
 web\modele\CloreDemandeAction.class
 web\modele\ListerThemesAction.class
@@ -7,6 +6,7 @@ web\modele\EleveLogInAction.class
 web\vue\CreationDemandeSerialisation.class
 web\vue\Serialisation.class
 web\modele\ConsulterListeDemandesAction.class
+web\modele\RecupDemandeAction.class
 web\vue\UpdateMatiereDemandeeSerialisation.class
 web\modele\ListerMatieresAction.class
 web\vue\EleveSerialisation.class
@@ -32,4 +32,5 @@ web\vue\ListerMatieresSerialisation.class
 web\vue\RecupThemeMatiereSerialisation.class
 web\modele\IntervenantLogInAction.class
 web\test\ServiceTest.class
+web\vue\DemandeSerialisation.class
 web\modele\GetListeEtablissementsAction.class

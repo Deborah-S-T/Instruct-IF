@@ -7,24 +7,24 @@
     </head>
     <body>
         <h1>Profil</h1>
-        <h2>Eleve</h2>
-        <ol id="ol-infos">
+        <button id="button-logOut">Log out</button>
+        <ul id="ul-infos">
             <li id="li-nom">Nom : </li>
             <li id="li-prenom">Prénom : </li>
             <li id="li-demandes">Anciennes demandes : 
                 <p id="p-pasDeDemandes"></p>
                 <table id="table-demandes"></table>
             </li>
-        </ol>
+        </ul>
  
         <script>
             function initPage() {
                 console.log("Initialisation de la page Profil");
                 mettreProfil();
-                //document.getElementById('bouton-inscription-eleve').addEventListener('click', function() {
-                //    console.log("Click sur le bouton 'Inscription Eleve'");
-                //    window.location.pathname = 'TD2/inscription.html';
-                //});
+                document.getElementById('button-logOut').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'log out'");
+                    logOut();
+                });
             };
             
             async function mettreProfil() {
@@ -65,7 +65,7 @@
                     detail.innerHTML = "DETAILS";
                     detail.addEventListener('click', function() {
                         console.log("Click sur le les détails");
-                        window.location.pathname = 'TD2/inscription.html?demande=' + d["id"];
+                        window.location = 'detailsDemande.html?demande=' + d["id"];
                     });
                     
                     tr.appendChild(date);
@@ -79,6 +79,29 @@
                     p.innerHTML = "Il n'y a pas encore de demandes";
                 }
             }
+            
+            async function logOut() {
+                console.log("Appel de l'Action: log out");
+                let url = './ActionServlet?todo=log-out';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse.reussit == "true") {
+                    console.log('logged out');
+                    window.location = "./connexion.html";
+                }
+            }
+            
             window.onload = initPage;
         </script>
     </body>

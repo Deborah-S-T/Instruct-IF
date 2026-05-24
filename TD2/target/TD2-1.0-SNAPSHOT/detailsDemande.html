@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nouvelle Demande</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Détails demande</h1>
+        <ul id="ul-infos">
+            <li id="li-matiere">Matière : </li>
+            <li id="li-theme">Thème : </li>
+            <li id="li-login">Pseudo : </li>
+            <li id="li-duree">Duree : </li>
+            <li id="li-date">Date : </li>
+            <li id="li-bilan">Bilan : </li>
+        </ul>
+        
+        <script>
+            function initPage() {
+                console.log("Initialisation de la page Détails demande");
+                
+                const params = new URLSearchParams(window.location.search); 
+                let demandeId = params.get("demande");
+                
+                afficherDemande(demandeId);
+            };
+            
+            async function afficherDemande(demandeId) {
+                console.log("Appel de l'Action: afficherDemande");
+                
+                let url = './ActionServlet?todo=recup-demande' + "&demandeId="+ demandeId;
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log("json:",jsonResponse);
+                if (jsonResponse) {
+                    let matiere = document.getElementById("li-matiere");
+                    let theme = document.getElementById("li-theme");
+                    let login = document.getElementById("li-login");
+                    let duree = document.getElementById("li-duree");
+                    let date = document.getElementById("li-date");
+                    let bilan = document.getElementById("li-bilan");
+
+                    matiere.innerHTML += jsonResponse["matiere"];
+                    theme.innerHTML += jsonResponse["theme"];
+                    login.innerHTML += jsonResponse["login"];
+                    duree.innerHTML += jsonResponse["duree"];
+                    date.innerHTML += jsonResponse["date"];
+                    bilan.innerHTML += jsonResponse["bilan"];
+                    
+                }
+            }
+            
+            window.onload = initPage;
+        </script>
+    </body>
+</html>

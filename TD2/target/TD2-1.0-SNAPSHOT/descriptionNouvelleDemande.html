@@ -7,13 +7,14 @@
     </head>
     <body>
         <h1>Description demande</h1>
-        <ol id="ol-infos">
+        <button id="button-logOut">Log out</button>
+        <ul id="ul-infos">
             <li id="li-matiere">Matière : </li>
             <li id="li-theme">Thème : </li>
             <li id="li-description">Description : 
                 <textarea id="textarea-description" placeholder="je n'ai pas compris l'ordre seigneurial"></textarea>
             </li>
-        </ol>
+        </ul>
         <button id='button-valider'>Valider la demande</button>
  
         <script>
@@ -27,6 +28,10 @@
                 document.getElementById('button-valider').addEventListener('click', function() {
                     console.log("Click sur le bouton 'Valider demande'");
                     creerDemande(theme);
+                });
+                document.getElementById('button-logOut').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'log out'");
+                    logOut();
                 });
             };
             
@@ -80,6 +85,29 @@
                     window.location = './etatDemande.html' + "?reussit=false" + "&idDemande=" + jsonResponse.idDemande + "&lienDemande=" + jsonResponse.lienDemande + "&theme=" + theme + "&description=" + description;
                 }
             }
+            
+            async function logOut() {
+                console.log("Appel de l'Action: log out");
+                let url = './ActionServlet?todo=log-out';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse.reussit == "true") {
+                    console.log('logged out');
+                    window.location.pathname = "TD2/connexion.html";
+                }
+            }
+            
             window.onload = initPage;
         </script>
     </body>

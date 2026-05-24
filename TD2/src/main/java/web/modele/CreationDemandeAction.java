@@ -46,6 +46,7 @@ public class CreationDemandeAction extends Action {
         if (demandeCree) {
             //for (Demande d : demandes) {
             for (Demande d : eleve.getHistoDemande()) {
+                System.out.println("ièmé demande : " + d);
                 if (!(d.getTermine())) {
                     if (d.getDescription().equals(description) && d.getTheme().getId().equals(theme.getId()) && d.getLien().equals(lien)) {
                         idDemande = d.getId().toString();

@@ -7,9 +7,8 @@
     </head>
     <body>
         <h1>Etat demande</h1>
-        <a href="nouvelleDemande.html">nouvelle demande</a>
-        <a href="profil.html">profil</a>
-        <ul id="ol-infos">
+        <button id="button-logOut">Log out</button>
+        <ul id="ul-infos">
             <li id="li-matiere">Matière : </li>
             <li id="li-theme">Thème : </li>
             <li id="li-description">Description : </li>
@@ -20,6 +19,11 @@
             function initPage() {
                 console.log("Initialisation de la page Nouvelle demande");
                 
+                document.getElementById('button-logOut').addEventListener('click', function() {
+                    console.log("Click sur le bouton 'log out'");
+                    logOut();
+                });
+                
                 const params = new URLSearchParams(window.location.search); 
                 let demandeCree = params.get("reussit");
                 let theme = params.get("theme");
@@ -29,6 +33,28 @@
                 
                 afficherEtatDemande(demandeCree, theme, description, idDemande, lienDemande);
             };
+            
+            async function logOut() {
+                console.log("Appel de l'Action: log out");
+                let url = './ActionServlet?todo=log-out';
+                let jsonResponse = await fetch(url)
+                        .then(
+                            function(httpResponse) {
+                                return httpResponse.json();
+                            }
+                        )
+                        .catch(
+                            function(error) {
+                                console.log(error);
+                                return null;
+                            }
+                        );
+                console.log(jsonResponse);
+                if (jsonResponse.reussit == "true") {
+                    console.log('logged out');
+                    window.location.pathname = "TD2/connexion.html";
+                }
+            }
             
             async function afficherEtatDemande(demandeCree, theme, description, idDemande, lienDemande) {
                 console.log("Appel de l'Action: afficherEtatDemande");
