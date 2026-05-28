@@ -33,6 +33,7 @@ web\modele\StatsNbEleveEtablissementAction.class
 web\vue\ListerMatieresSerialisation.class
 web\vue\RecupThemeMatiereSerialisation.class
 web\modele\IntervenantLogInAction.class
+web\vue\StatsSerialisation.class
 web\test\ServiceTest.class
 web\modele\InfoInterventionAction.class
 web\vue\DemandeSerialisation.class

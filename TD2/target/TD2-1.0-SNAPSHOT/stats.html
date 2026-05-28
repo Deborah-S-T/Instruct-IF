@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Statistiques — Instruct-IF</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
+    </head>
+    <body>
+        <div data-main>
+            <h1 class="page-title">Statistiques</h1>
+            <p class="page-subtitle">Synthèse de votre activité de soutien</p>
+
+            <div class="stats-grid" id="stats-kpi">
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-nb-soutien">—</span>
+                    <span class="stat-label">Soutiens réalisés</span>
+                </div>
+                <div class="stat-card accent">
+                    <span class="stat-value" id="stat-nb-eleve">—</span>
+                    <span class="stat-label">Élèves accompagnés</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-moyenne">—</span>
+                    <span class="stat-label">Durée moyenne (min)</span>
+                </div>
+            </div>
+
+            <section class="card">
+                <h2>Répartition des durées</h2>
+                <div class="chart-bars" id="chart-proportions"></div>
+            </section>
+
+            <section class="card">
+                <h2>Élèves par établissement</h2>
+                <div class="form-group">
+                    <label for="input-code-etab">Code établissement</label>
+                    <input type="text" id="input-code-etab" value="0691664J" placeholder="ex. 0691664J">
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-etab">Actualiser</button>
+                <p style="margin-top:1rem;">
+                    <strong id="stat-nb-etab">—</strong> élève(s) inscrit(s) pour l'établissement
+                    <span id="stat-code-etab" class="badge badge-pending"></span>
+                </p>
+            </section>
+
+            <div class="toolbar">
+                <a href="intervention.html" class="btn btn-secondary">Intervention en cours</a>
+                <a href="profil.html?intervenant=true&eleve=false&idEleve=null" class="btn btn-ghost">Mon profil</a>
+            </div>
+        </div>
+
+        <script src="js/layout.js"></script>
+        <script>
+            function initPage() {
+                renderHeader({
+                    links: [
+                        { href: 'intervention.html', label: 'Intervention' },
+                        { href: 'profil.html?intervenant=true&eleve=false&idEleve=null', label: 'Profil' },
+                        { href: 'connexion.html', label: 'Déconnexion' }
+                    ]
+                });
+                document.getElementById('btn-etab').addEventListener('click', chargerNbEleveEtablissement);
+                chargerToutesStats();
+            }
+
+            async function chargerToutesStats() {
+                var nbSoutien = await fetchJson('./ActionServlet?todo=stats-nb-soutien');
+                if (nbSoutien && nbSoutien.valeur !== undefined) {
+                    document.getElementById('stat-nb-soutien').textContent = nbSoutien.valeur;
+                }
+                var nbEleve = await fetchJson('./ActionServlet?todo=stats-nb-eleve');
+                if (nbEleve && nbEleve.valeur !== undefined) {
+                    document.getElementById('stat-nb-eleve').textContent = nbEleve.valeur;
+                }
+                var moyenne = await fetchJson('./ActionServlet?todo=stats-moyenne-duree');
+                if (moyenne && moyenne.valeur !== undefined) {
+                    document.getElementById('stat-moyenne').textContent = moyenne.valeur;
+                }
+                var proportions = await fetchJson('./ActionServlet?todo=stats-proportions-duree');
+                if (proportions && proportions.valeurs) {
+                    afficherProportions(proportions.valeurs, proportions.labels);
+                }
+                await chargerNbEleveEtablissement();
+            }
+
+            function afficherProportions(valeurs, labels) {
+                var chart = document.getElementById('chart-proportions');
+                chart.innerHTML = '';
+                var max = Math.max.apply(null, valeurs.concat([1]));
+                for (var i = 0; i < valeurs.length; i++) {
+                    var group = document.createElement('div');
+                    group.className = 'chart-bar-group';
+                    var bar = document.createElement('div');
+                    bar.className = 'chart-bar';
+                    bar.style.height = (valeurs[i] / max * 140) + 'px';
+                    var val = document.createElement('span');
+                    val.className = 'chart-bar-value';
+                    val.textContent = valeurs[i];
+                    var lab = document.createElement('span');
+                    lab.className = 'chart-bar-label';
+                    lab.textContent = labels ? labels[i] : '';
+                    group.appendChild(val);
+                    group.appendChild(bar);
+                    group.appendChild(lab);
+                    chart.appendChild(group);
+                }
+            }
+
+            async function chargerNbEleveEtablissement() {
+                var code = document.getElementById('input-code-etab').value;
+                var json = await fetchJson('./ActionServlet?todo=stats-nb-eleve-etablissement&codeEtablissement=' + encodeURIComponent(code));
+                if (json) {
+                    document.getElementById('stat-nb-etab').textContent = json.valeur;
+                    document.getElementById('stat-code-etab').textContent = json.codeEtablissement || code;
+                }
+            }
+
+            window.onload = initPage;
+        </script>
+    </body>
+</html>

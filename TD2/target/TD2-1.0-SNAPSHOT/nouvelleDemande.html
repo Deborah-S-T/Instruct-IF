@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Nouvelle Demande</title>
+        <title>Nouvelle demande — Instruct-IF</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1>Nouvelle Demande</h1>
-        <button id="button-logOut">Log out</button>
-        <button id="button-profil">Profil</button>
-        <div>
-            <p>matieres</p>
-            <select name="matieres" id="select-matiere" onchange="mettreThemes()">
-                <option value="">--Veuillez choisir une option--</option>
-            </select>
+        <div data-main>
+            <h1 class="page-title">Nouvelle demande</h1>
+            <p class="page-subtitle">Sélectionnez une matière et un thème</p>
+
+            <div class="toolbar">
+                <button id="button-profil" class="btn btn-ghost" type="button">Mon profil</button>
+                <button id="button-logOut" class="btn btn-danger" type="button">Déconnexion</button>
+            </div>
+
+            <section class="card">
+                <div class="form-group">
+                    <label for="select-matiere">Matière</label>
+                    <select name="matieres" id="select-matiere" onchange="mettreThemes()">
+                        <option value="">--Veuillez choisir une option--</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="select-theme">Thème</label>
+                    <select name="themes" id="select-theme" onchange="updateMatiereValue()">
+                        <option value="">--Veuillez choisir une option--</option>
+                    </select>
+                </div>
+                <button id="button-creerDemande" class="btn btn-primary" type="button" onclick="creerDemande()">Continuer</button>
+                <div id="div-erreur"></div>
+            </section>
         </div>
-        <div>
-            <p>themes</p>
-            <select name="themes" id="select-theme" onchange="updateMatiereValue()">
-                <option value="">--Veuillez choisir une option--</option>
-            </select>
-        </div>
-        <button id="button-creerDemande" onclick="creerDemande()">Créer la demande</button>
-        <div id="div-erreur"></div>
+
+        <script src="js/layout.js"></script>
         
         <script>
             function initPage() {
                 console.log("Initialisation de la page nouvelle Demande");
+                renderHeader({
+                    links: [
+                        { href: 'profil.html?intervenant=false&eleve=true&idEleve=null', label: 'Profil' },
+                        { onclick: logOut, label: 'Déconnexion' }
+                    ]
+                });
                 document.getElementById('button-profil').addEventListener('click', function() {
                     console.log("Click sur le bouton 'Profil'");
                     window.location = "./profil.html" + "?intervenant=false" + "&eleve=true" + "&idEleve=null";
@@ -55,9 +73,9 @@
                             }
                         );
                 console.log(jsonResponse);
-                if (jsonResponse.reussit == "true") {
+                if (jsonResponse && jsonResponse.reussit == "true") {
                     console.log('logged out');
-                    window.location.pathname = "TD2/connexion.html";
+                    window.location = "./connexion.html";
                 }
             }
             
@@ -81,12 +99,12 @@
                     console.log('Affichage de la liste de matieres');
                     var select = document.getElementById("select-matiere");
                     select.innerHTML = '<option value="">--Veuillez choisir une option--</option>';
-                    for (let m of jsonResponse["matieres"]) {
+                    jsonResponse["matieres"].forEach(function (m) {
                         var option = document.createElement("option");
-                        option.innerHTML = m["nom"];
+                        option.textContent = m["nom"];
                         option.value = m["id"];
                         select.appendChild(option);
-                    }
+                    });
                 }
             }
             
@@ -110,12 +128,12 @@
                     console.log('Affichage de la liste de thèmes');
                     var select = document.getElementById("select-theme");
                     select.innerHTML = '<option value="">--Veuillez choisir une option--</option>';
-                    for (let t of jsonResponse["themes"]) {
+                    jsonResponse["themes"].forEach(function (t) {
                         var option = document.createElement("option");
                         option.innerHTML = t["nom"];
                         option.value = t["id"];
                         select.appendChild(option);
-                    }
+                    });
                 }
             }
             
@@ -146,7 +164,7 @@
                 var theme = document.getElementById("select-theme").value;
                 var erreurDiv = document.getElementById("div-erreur");
                 if (theme == "") {
-                    erreurDiv.innerHTML = "Vous ne pouvez pas creer de demande sans thème";
+                    erreurDiv.innerHTML = '<div class="alert alert-warning">Choisissez un thème avant de continuer.</div>';
                 }
                 else {
                     window.location = './descriptionNouvelleDemande.html?theme=' + theme;

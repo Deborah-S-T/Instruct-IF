@@ -130,7 +130,7 @@
                     lienEl.textContent = 'Non renseigné';
                 }
 
-                var statut = json.termine === 'true'
+                var statut = json.termine === true
                     ? '<span class="badge badge-success">Terminée</span>'
                     : '<span class="badge badge-pending">En cours</span>';
                 document.getElementById('val-statut').innerHTML = statut;

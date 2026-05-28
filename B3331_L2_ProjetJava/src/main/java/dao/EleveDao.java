@@ -33,7 +33,7 @@ public class EleveDao {
     
     public List<Demande> findHistoDemandeByID(Eleve e1){ //Méthode complémentaire pour récupérer la liste des demandes d'un élève
         Long eleveID = e1.getId();
-        String s = "SELECT d FROM Eleve e JOIN e.histoDemandes d WHERE e.id = :id AND d.termine = true";
+        String s = "SELECT distinct d FROM Eleve e JOIN e.histoDemandes d WHERE e.id = :id";
         TypedQuery<Demande> query = JpaUtil.obtenirContextePersistance().createQuery(s, Demande.class);
         query.setParameter("id", eleveID);
         return query.getResultList();

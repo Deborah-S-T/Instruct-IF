@@ -56,7 +56,7 @@ public class IntervenantDao {
     
     public List<Demande> findHistoDemandeByID(Intervenant it){ //Méthode complémentaire pour récupérer la liste des demandes d'un intervenant
         Long intId = it.getId();
-        String s = "SELECT d FROM Intervenant it JOIN it.listeDemande d WHERE it.id = :id AND d.termine = true";
+        String s = "SELECT distinct d FROM Intervenant it JOIN it.listeDemande d WHERE it.id = :id";
         TypedQuery<Demande> query = JpaUtil.obtenirContextePersistance().createQuery(s, Demande.class);
         query.setParameter("id", intId);
         return query.getResultList();

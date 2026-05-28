@@ -1,33 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Nouvelle Demande</title>
+        <title>Description — Instruct-IF</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1>Description demande</h1>
-        <button id="button-logOut">Log out</button>
-        <ul id="ul-infos">
-            <li id="li-matiere">Matière : </li>
-            <li id="li-theme">Thème : </li>
-            <li id="li-description">Description : 
-                <textarea id="textarea-description" placeholder="je n'ai pas compris l'ordre seigneurial"></textarea>
-            </li>
-        </ul>
-        <button id='button-valider'>Valider la demande</button>
+        <div data-main>
+            <h1 class="page-title">Description de la demande</h1>
+            <p class="page-subtitle">Précisez votre besoin de soutien</p>
+
+            <section class="card">
+                <ul class="info-list">
+                    <li><span class="label">Matière</span><span class="value" id="li-matiere">—</span></li>
+                    <li><span class="label">Thème</span><span class="value" id="li-theme">—</span></li>
+                </ul>
+                <div class="form-group">
+                    <label for="textarea-description">Description</label>
+                    <textarea id="textarea-description" placeholder="Ex. : je n'ai pas compris l'ordre seigneurial…"></textarea>
+                </div>
+                <button id="button-valider" class="btn btn-primary" type="button">Valider la demande</button>
+            </section>
+        </div>
+
+        <script src="js/layout.js"></script>
  
         <script>
             function initPage() {
                 console.log("Initialisation de la page Nouvelle demande");
                 
+                renderHeader({ links: [{ href: 'nouvelleDemande.html', label: 'Retour' }] });
+
                 const params = new URLSearchParams(window.location.search); 
-                let theme = params.get("theme");
+                let themeId = params.get("theme");
                 
-                recupThemeMatiere(theme);
+                recupThemeMatiere(themeId);
                 document.getElementById('button-valider').addEventListener('click', function() {
                     console.log("Click sur le bouton 'Valider demande'");
-                    creerDemande(theme);
+                    creerDemande(themeId);
                 });
                 document.getElementById('button-logOut').addEventListener('click', function() {
                     console.log("Click sur le bouton 'log out'");
@@ -56,8 +67,8 @@
                     let matiere = document.getElementById("li-matiere");
                     let theme = document.getElementById("li-theme");
 
-                    matiere.innerHTML += jsonResponse["matiereNom"];
-                    theme.innerHTML += jsonResponse["themeNom"];
+                    matiere.textContent = jsonResponse["matiereNom"];
+                    theme.textContent = jsonResponse["themeNom"];
                 }
             }
             
@@ -78,11 +89,8 @@
                             }
                         );
                 console.log("json:",jsonResponse);
-                if (jsonResponse.reussit == "true") {
-                    window.location = './etatDemande.html' + "?reussit=true" + "&idDemande=" + jsonResponse.idDemande + "&lienDemande=" + jsonResponse.lienDemande + "&theme=" + theme + "&description=" + description;
-                }
-                else if (jsonResponse.reussit == "false") {
-                    window.location = './etatDemande.html' + "?reussit=false" + "&idDemande=" + jsonResponse.idDemande + "&lienDemande=" + jsonResponse.lienDemande + "&theme=" + theme + "&description=" + description;
+                if (jsonResponse) {
+                    window.location = './etatDemande.html' + "?reussit=" + jsonResponse.reussit + "&idDemande=" + jsonResponse.idDemande + "&lienDemande=" + jsonResponse.lienDemande + "&theme=" + theme + "&description=" + description;
                 }
             }
             
@@ -104,7 +112,7 @@
                 console.log(jsonResponse);
                 if (jsonResponse.reussit == "true") {
                     console.log('logged out');
-                    window.location.pathname = "TD2/connexion.html";
+                    window.location = "./connexion.html";
                 }
             }
             

@@ -44,6 +44,13 @@ public class DemandeSerialisation extends Serialisation {
            jsonContainer.add("bilan", demande.getBilan());
        }
        jsonContainer.add("description", demande.getDescription());
+       if (demande.getLien()== null) {
+           jsonContainer.add("lien", "null");
+       }
+       else {
+           jsonContainer.add("lien", demande.getBilan());
+       }
+       jsonContainer.add("termine", demande.getTermine());
        
        PrintWriter out = response.getWriter();
        String builtJson = jsonContainer.build().toString();

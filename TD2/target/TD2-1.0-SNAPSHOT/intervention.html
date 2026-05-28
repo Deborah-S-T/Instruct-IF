@@ -1,22 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Intervention</title>
+        <title>Intervention — Instruct-IF</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1>Nouvelle demande reçue</h1>
-        <button id="button-logOut">Log out</button>
-        <button id="button-profil">Profil</button>
-        <div id="div-demande">
-            <ul id="ul-infos"></ul>
+        <div data-main>
+            <h1 class="page-title">Intervention en cours</h1>
+            <p class="page-subtitle">Demande de soutien assignée</p>
+
+            <div class="toolbar">
+                <button id="button-profil" class="btn btn-ghost" type="button">Profil</button>
+                <a href="stats.html" class="btn btn-ghost">Statistiques</a>
+                <button id="button-logOut" class="btn btn-danger" type="button">Déconnexion</button>
+            </div>
+
+            <div id="div-demande" class="card">
+                <ul class="info-list" id="ul-infos"></ul>
+            </div>
+            <div id="div-message"></div>
         </div>
-        <div id="div-message"></div>
+
+        <script src="js/layout.js"></script>
         
         <script>
             function initPage() {
                 console.log("Initialisation de la page Intervention");
+                renderHeader({
+                    links: [
+                        { href: 'profil.html?intervenant=true&eleve=false&idEleve=null', label: 'Profil' },
+                        { href: 'stats.html', label: 'Statistiques' }
+                    ]
+                });
                 mettreInfos();
                 document.getElementById('button-logOut').addEventListener('click', function() {
                     console.log("Click sur le bouton 'log out'");
@@ -47,64 +64,72 @@
 
                 
                 let divDemande = document.getElementById("div-demande");
-                if (jsonResponse.dispo) {
-                    divDemande.innerHTML = "";
-                    let message = document.getElementById("div-message");
-                    message.innerHTML = "Aucune nouvelle demande actuellement.";
+                let message = document.getElementById("div-message");
+
+                if (jsonResponse && jsonResponse.dispo) {
+                    divDemande.innerHTML = '<div class="empty-state">Aucune nouvelle demande pour le moment.</div>';
+                    message.innerHTML = '<div class="alert alert-info">Vous êtes disponible pour une nouvelle intervention.</div>';
                 }
                 else {
                     let ul = document.getElementById("ul-infos");
-                    let liMatiere = document.createElement("li");
-                    let liTheme = document.createElement("li");
-                    let liDescription = document.createElement("li");
-                    let liLien = document.createElement("li");
+                    ul.innerHTML = '';
                     
-                    liMatiere.innerHTML = "Matière : " + jsonResponse["matiere"];
-                    liTheme.innerHTML = "Theme : " + jsonResponse["theme"];
-                    liDescription.innerHTML = "Description : " + jsonResponse["description"];
-                    liLien.innerHTML = "Lien : " + jsonResponse["lien"];
-                    
-                    ul.appendChild(liMatiere);
-                    ul.appendChild(liTheme);
-                    ul.appendChild(liDescription);
-                    ul.appendChild(liLien);
+                    [
+                        ['Matière', jsonResponse.matiere],
+                        ['Thème', jsonResponse.theme],
+                        ['Description', jsonResponse.description],
+                        ['Lien visio', jsonResponse.lien]
+                    ].forEach(function (row) {
+                        var li = document.createElement('li');
+                        li.innerHTML = '<span class="label">' + row[0] + '</span><span class="value">' + row[1] + '</span>';
+                        ul.appendChild(li);
+                    });
+
+                    var actions = document.createElement('div');
+                    actions.className = 'toolbar';
+                    actions.style.marginTop = '1rem';
                     
                     let buttonEleve = document.createElement("button");
+                    buttonEleve.className = 'btn btn-secondary';
                     buttonEleve.innerHTML = "Détail Eleve";
                     buttonEleve.addEventListener('click', function() {
                         console.log("Click sur le bouton 'Eleve'");
                         window.location = "./profil.html" + "?intervenant=true" + "&eleve=true" + "&idEleve=" + jsonResponse.eleveId;
                     });
+
+                    actions.appendChild(buttonEleve);
+                    divDemande.appendChild(actions);
                     
-                    let p = document.createElement("p");
-                    p.innerHTML = "Bilan après l'intervention à rédiger pour l'élève :";
-                    let textarea = document.createElement("textarea");
-                    textarea.placeholder = "De grands progrès, exercices de bases maîtrisés.";
-                    
-                    let buttonClore = document.createElement("button");
-                    buttonClore.innerHTML = "Clore l'intervention";
-                    buttonClore.disable = true;
-                    buttonClore.addEventListener('click', function() {
+                    var form = document.createElement('div');
+                    form.className = 'card';
+                    form.style.marginTop = '1rem';
+                    form.innerHTML = '<h2>Clôturer l\'intervention</h2>';
+                    var pBilan = document.createElement('p');
+                    pBilan.textContent = 'Bilan pour l\'élève :';
+                    var textarea = document.createElement('textarea');
+                    textarea.placeholder = 'De grands progrès, exercices de base maîtrisés.';
+                    var pDuree = document.createElement('p');
+                    pDuree.textContent = 'Durée (minutes) :';
+                    var input = document.createElement('input');
+                    input.type = 'number';
+                    input.placeholder = '120';
+                    var btnClore = document.createElement('button');
+                    btnClore.className = 'btn btn-primary';
+                    btnClore.textContent = 'Clore l\'intervention';
+                    btnClore.disabled = true;
+                    input.addEventListener('input', function () {
+                        btnClore.disabled = !input.value;
+                    });
+                    btnClore.addEventListener('click', function () {
                         console.log("Click sur le bouton 'Clore'");
-                        cloreDemande(input.value, textarea.innerHTML);
+                        cloreDemande(input.value, textarea.value);
                     });
-                    
-                    let pduree = document.createElement("p");
-                    pduree.innerHTML = "Durée de l'intervention en minutes :";
-                    let input = document.createElement("input");
-                    input.placeholder = "120";
-                    input.addEventListener(('change'), function() {
-                        if (input.value != "") {
-                            buttonClore.disable = false;
-                        }
-                    });
-                    
-                    divDemande.appendChild(buttonEleve);
-                    divDemande.appendChild(p);
-                    divDemande.appendChild(textarea);
-                    divDemande.appendChild(pduree);
-                    divDemande.appendChild(input);
-                    divDemande.appendChild(buttonClore);
+                    form.appendChild(pBilan);
+                    form.appendChild(textarea);
+                    form.appendChild(pDuree);
+                    form.appendChild(input);
+                    form.appendChild(btnClore);
+                    divDemande.parentNode.appendChild(form);
                     
                 }
             }
@@ -125,7 +150,7 @@
                             }
                         );
                 console.log(jsonResponse);
-                if (jsonResponse.reussit == "true") {
+                if (jsonResponse && jsonResponse.reussit == "true") {
                     console.log('logged out');
                     window.location = "./connexion.html";
                 }

@@ -29,7 +29,7 @@ public class InfoInterventionAction extends Action {
         Demande demande = (Demande) null;
         
         if (!dispo) {
-            List<Demande> demandes = intervenant.getHistoDemande();
+            List<Demande> demandes = service.historiqueDemandeIntervenant(intervenant);
             for (Demande d : demandes) {
                 System.out.println("ièmé demande : " + d);
                 if (!(d.getTermine())) {

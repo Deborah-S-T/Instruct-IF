@@ -39,14 +39,14 @@ public class CreationDemandeAction extends Action {
         
         boolean demandeCree = service.creationDemande(description, theme, eleve, lien);
         
-        //List<Demande> demandes = service.historiqueDemandeEleve(eleve);
-        //System.out.println("demandes : " + demandes);
+        List<Demande> demandes = service.historiqueDemandeEleve(eleve);
+        System.out.println("demandes : " + demandes);
         String idDemande = "null";
         String lienDemande = "null";
         if (demandeCree) {
-            //for (Demande d : demandes) {
-            for (Demande d : eleve.getHistoDemande()) {
-                System.out.println("ièmé demande : " + d);
+            for (Demande d : demandes) {
+            //for (Demande d : eleve.getHistoDemande()) {
+                //System.out.println("ièmé demande : " + d);
                 if (!(d.getTermine())) {
                     if (d.getDescription().equals(description) && d.getTheme().getId().equals(theme.getId()) && d.getLien().equals(lien)) {
                         idDemande = d.getId().toString();

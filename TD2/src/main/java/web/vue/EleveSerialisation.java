@@ -66,8 +66,8 @@ public class EleveSerialisation extends Serialisation{
        jsonEleve.add("idEtablissement", eleve.getEtablissement().getId().toString());
        jsonEleve.add("codeEtablissement", eleve.getEtablissement().getCode().toString());
        JsonArrayBuilder jsonDemandeArray = Json.createArrayBuilder();
-       //for (Demande d : demandes)
-       for (Demande d : eleve.getHistoDemande())
+       for (Demande d : demandes)
+       //for (Demande d : eleve.getHistoDemande())
        {
            JsonObjectBuilder jsonDemande = Json.createObjectBuilder();
            jsonDemande.add("id", d.getId());
