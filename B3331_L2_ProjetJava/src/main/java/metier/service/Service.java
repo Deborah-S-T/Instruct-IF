@@ -271,6 +271,7 @@ public class Service {
         EleveDao eleDao = new EleveDao();
 
         it.setDisponible(true);
+        it.setNb_intervention(it.getNb_intervention() + 1);
 
         JpaUtil.creerContextePersistance();
         Demande demandeEnCours = intDao.recupererDemandeEnCours(it);
