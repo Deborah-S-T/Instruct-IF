@@ -48,7 +48,7 @@ public class DemandeSerialisation extends Serialisation {
            jsonContainer.add("lien", "null");
        }
        else {
-           jsonContainer.add("lien", demande.getBilan());
+           jsonContainer.add("lien", demande.getLien());
        }
        jsonContainer.add("termine", demande.getTermine());
        

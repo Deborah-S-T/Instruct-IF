@@ -34,6 +34,11 @@ import web.modele.RecupThemeMatiereAction;
 import web.modele.UpdateMatiereDemandeeAction;
 import web.modele.MettreProfilAction;
 import web.modele.MettreProfilIntervenantAction;
+import web.modele.StatsMoyenneDureeSoutienAction;
+import web.modele.StatsNbEleveAction;
+import web.modele.StatsNbEleveEtablissementAction;
+import web.modele.StatsNbSoutienAction;
+import web.modele.StatsProportionDureeAction;
 import web.test.DemandeTest;
 import web.vue.CreationDemandeSerialisation;
 import web.vue.DemandeSerialisation;
@@ -46,6 +51,7 @@ import web.vue.ListerThemesSerialisation;
 import web.vue.RecupThemeMatiereSerialisation;
 import web.vue.ReussiteSerialisation;
 import web.vue.Serialisation;
+import web.vue.StatsSerialisation;
 import web.vue.UpdateMatiereDemandeeSerialisation;
 
 /**
@@ -229,6 +235,46 @@ public class ActionServlet extends HttpServlet {
                 
                 //serialisation
                 serialisation = new IntervenantSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "stats-nb-soutien": {
+                action = new StatsNbSoutienAction();
+                action.execute(request);
+                request.setAttribute("statsType", "nb-soutien");
+                serialisation = new StatsSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "stats-moyenne-duree": {
+                action = new StatsMoyenneDureeSoutienAction();
+                action.execute(request);
+                request.setAttribute("statsType", "moyenne-duree");
+                serialisation = new StatsSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "stats-nb-eleve": {
+                action = new StatsNbEleveAction();
+                action.execute(request);
+                request.setAttribute("statsType", "nb-eleve");
+                serialisation = new StatsSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "stats-proportions-duree": {
+                action = new StatsProportionDureeAction();
+                action.execute(request);
+                request.setAttribute("statsType", "proportions-duree");
+                serialisation = new StatsSerialisation();
+                serialisation.appliquer(request, response);
+                break;
+            }
+            case "stats-nb-eleve-etablissement": {
+                action = new StatsNbEleveEtablissementAction();
+                action.execute(request);
+                request.setAttribute("statsType", "nb-eleve-etablissement");
+                serialisation = new StatsSerialisation();
                 serialisation.appliquer(request, response);
                 break;
             }
