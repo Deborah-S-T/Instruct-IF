@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Instruct-IF — Accueil</title>
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1>Page d'acceuil</h1>
-        <a href="connexion.html">connexion</a>
-        <br>
-        <a href="inscription.html">inscription</a>
+        <div data-main class="hero">
+            <h1 class="page-title">Instruct-IF</h1>
+            <p class="page-subtitle">Plateforme de soutien scolaire entre élèves et intervenants</p>
+            <div class="hero-actions">
+                <a href="connexion.html" class="btn btn-primary">Se connecter</a>
+                <a href="inscription.html" class="btn btn-secondary">S'inscrire (élève)</a>
+            </div>
+        </div>
+        <script src="js/layout.js"></script>
         <script>
             function initPage() {
                 console.log("Initialisation de la page Index");
+                renderHeader({ brandHref: 'index.html' });
             };
             
             window.onload = initPage;

@@ -1,25 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>S'inscrire</title>
+        <title>Inscription — Instruct-IF</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
-<body>
-    <h2>Inscription</h2>
-    <div>
-        <input type="text" id="input-nom" value="Einstein" placeholder="Nom" required>
-        <input type="text" id="input-prenom" value="Abert" placeholder="Prénom" required>
-        <input type="email" id="input-mail" value="Albert.Einstein@insa-lyon.fr" placeholder="Email" required>
-        <input type="password" id="input-password" placeholder="Mot de passe" required>
-        <input type="text" id="input-dateNaissance" value="2005-04-16" placeholder="yyyy-MM-dd" required>
-        <input type="number" id="input-classe" value="4" placeholder="Classe">
-        <input type="text" id="input-codeEtablissement" value="0691664J" placeholder="Code Établissement (ex: 0691664J)">
-    </div>
-    <button id="button-submition" type="submit">S'inscrire</button>
-    <div id="div-erreur"></div>
+    <body>
+        <div data-main>
+            <h1 class="page-title">Inscription élève</h1>
+            <p class="page-subtitle">Créez votre compte pour demander du soutien</p>
+
+            <section class="card">
+                <div class="card-grid card-grid-2">
+                    <div class="form-group">
+                        <label for="input-nom">Nom</label>
+                        <input type="text" id="input-nom" value="Einstein" placeholder="Nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-prenom">Prénom</label>
+                        <input type="text" id="input-prenom" value="Abert" placeholder="Prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-mail">E-mail</label>
+                        <input type="email" id="input-mail" value="Albert.Einstein@insa-lyon.fr" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-password">Mot de passe</label>
+                        <input type="password" id="input-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-dateNaissance">Date de naissance</label>
+                        <input type="text" id="input-dateNaissance" value="2005-04-16" placeholder="yyyy-MM-dd" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="input-classe">Classe</label>
+                        <input type="number" id="input-classe" value="4">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="input-codeEtablissement">Code établissement</label>
+                        <input type="text" id="input-codeEtablissement" value="0691664J" placeholder="ex. 0691664J">
+                    </div>
+                </div>
+                <button id="button-submition" class="btn btn-primary" type="button">S'inscrire</button>
+            </section>
+            <div id="div-erreur"></div>
+        </div>
+
+        <script src="js/layout.js"></script>
 
     <script>
             function initPage() {
                 console.log("Initialisation de la page d'inscription");
+                renderHeader({ links: [{ href: 'connexion.html', label: 'Connexion' }] });
                 document.getElementById('button-submition').addEventListener('click', function() {
                     console.log("Click sur le bouton 'Inscription'");
                     inscription();
@@ -43,23 +76,22 @@
                             }
                         );
                 console.log("json:",jsonResponse);
-                if (jsonResponse.reussit == "true") {
-                    window.location.pathname = 'TD2/connexion.html';
+                if (jsonResponse && jsonResponse.reussit == "true") {
+                    window.location = './connexion.html';
                 }
-                else if (jsonResponse.reussit == "false") {
+                else if (jsonResponse && jsonResponse.reussit == "false") {
                     let div = document.getElementById("div-erreur");
-                    div.innerHTML = "";
+                    let textErreur = '<div class="alert alert-error">Erreur d\'inscription : vérifiez le code d\'établissement ou un compte existe déjà.</div>';
+                    div.innerHTML = textErreur;
                     
                     let boutonConnexion = document.createElement("button");
-                    boutonConnexion.innerHTML = "Aller à la page de connexion";
+                    boutonConnexion.className = 'btn btn-secondary';
+                    boutonConnexion.textContent = "Aller à la page de connexion";
                     boutonConnexion.addEventListener('click', function() {
                         console.log("Click sur le bouton 'Connexion'");
-                        window.location.pathname = "TD2/connexion.html";
+                        window.location = "./connexion.html";
                     });
                     
-                    let textErreur = "Erreur d'inscription : \br assurez vous d'avoir le bon code d'établissement \br ou vous avez peut-être déjà un compte";
-                    
-                    div.innerHTML = textErreur;
                     div.appendChild(boutonConnexion);
                 }
             }

@@ -1,31 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Profil</title>
+        <title>Profil — Instruct-IF</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1 id="h1-titre">Profil</h1>
-        <ul id="ul-infos"></ul>
-        
- 
+        <div data-main>
+            <h1 class="page-title" id="h1-titre">Profil</h1>
+            <p class="page-subtitle" id="page-subtitle"></p>
+
+            <div class="toolbar" id="toolbar-actions"></div>
+            <section class="card">
+                <ul class="info-list" id="ul-infos"></ul>
+                <div id="historique-zone"></div>
+            </section>
+        </div>
+
+        <script src="js/layout.js"></script>
         <script>
             function initPage() {
                 console.log("Initialisation de la page Profil");
                 
                 const params = new URLSearchParams(window.location.search); 
-                let intervenant = params.get("intervenant");
-                let eleve = params.get("eleve");
-                let idEleve = params.get("idEleve");
-                
-                if (eleve == "true") {
+                isIntervenant = params.get('intervenant') === 'true';
+                isEleveProfil = params.get('eleve') === 'true';
+                var idEleve = params.get('idEleve');
+
+                if (isEleveProfil && idEleve !== 'null') {
+                    document.getElementById('h1-titre').textContent = 'Profil élève';
+                    document.getElementById('page-subtitle').textContent = 'Informations de l\'élève accompagné';
                     mettreProfilEleve(idEleve);
-                }
-                else {
+                    renderHeader({
+                        links: [
+                            { href: 'intervention.html', label: 'Intervention' },
+                            { href: 'stats.html', label: 'Statistiques' }
+                        ]
+                    });
+                } else if (isIntervenant) {
+                    document.getElementById('page-subtitle').textContent = 'Vos interventions et historique';
                     mettreProfilIntervenant();
+                    renderHeader({
+                        links: [
+                            { href: 'intervention.html', label: 'Intervention' },
+                            { href: 'stats.html', label: 'Statistiques' }
+                        ]
+                    });
+                    var tb = document.getElementById('toolbar-actions');
+                    tb.innerHTML = '<a href="stats.html" class="btn btn-primary">Voir les statistiques</a>';
+                } else {
+                    document.getElementById('page-subtitle').textContent = 'Votre espace élève';
+                    mettreProfilEleve('null');
+                    renderHeader({ links: [{ href: 'nouvelleDemande.html', label: 'Nouvelle demande' }] });
                 }
             };
+
+            function ajouterLogOut(ul) {
+                var tb = document.getElementById('toolbar-actions');
+                var btn = document.createElement('button');
+                btn.className = 'btn btn-danger';
+                btn.textContent = 'Déconnexion';
+                btn.onclick = logOut;
+                tb.appendChild(btn);
+            }
             
             async function mettreProfilEleve(idEleve) {
                 console.log("Appel de l'Action: mettreProfilEleve");
@@ -47,91 +85,20 @@
                 
                 if (idEleve == "null") {
                     
-                    let logOutButton = document.createElement("button");
-                    logOutButton.innerHTML = "Log out";
-                    document.body.insertBefore(logOutButton, ul);
-                    logOutButton.addEventListener('click', function() {
-                        console.log("Click sur le bouton 'log out'");
-                        logOut();
-                    });
-                    
-                    let nom = document.createElement("li");
-                    nom.innerHTML = "Nom : ";
-                    let prenom = document.createElement("li");
-                    prenom.innerHTML = "Prénom : ";
-                    let lidemandes = document.createElement("li");
-                    lidemandes.innerHTML = "Anciennes demandes : ";
-                    
-                    let p = document.createElement("p");
-                    lidemandes.appendChild(p);
-                    let demandes = document.createElement("table");
-                    lidemandes.appendChild(demandes);
-                    
-                    ul.appendChild(nom);
-                    ul.appendChild(prenom);
-                    ul.appendChild(lidemandes);
+                    ajouterLogOut(ul);
+                    ul.innerHTML += '<li><span class="label">Nom</span><span class="value">' + jsonResponse.nom + '</span></li>';
+                    ul.innerHTML += '<li><span class="label">Prénom</span><span class="value">' + jsonResponse.prenom + '</span></li>';
+                    afficherHistorique(jsonResponse.histoDemandes, 'eleve');
 
-                    nom.innerHTML += jsonResponse["nom"];
-                    prenom.innerHTML += jsonResponse["prenom"];
-                    p.innerHTML = "";
-
-                    jsonResponse["histoDemandes"].forEach((d) => {
-                        console.log(d);
-                        let tr = document.createElement("tr");
-                        let date = document.createElement("td");
-                        let matiere = document.createElement("td");
-                        let detail = document.createElement("td");
-
-                        date.innerHTML = d["date"];
-                        matiere.innerHTML = d["matiere"];
-                        detail.innerHTML = "DETAILS";
-                        detail.addEventListener('click', function() {
-                            console.log("Click sur le les détails");
-                            window.location = 'detailsDemande.html?demande=' + d["id"];
-                        });
-
-                        tr.appendChild(date);
-                        tr.appendChild(matiere);
-                        tr.appendChild(detail);
-                        demandes.appendChild(tr);
-                    });
-
-                    if (jsonResponse["histoDemandes"].length == 0)
-                    {
-                        p.innerHTML = "Il n'y a pas encore de demandes";
-                    }
                 }
                 else {
                     
-                    let h1Titre = document.getElementById("h1-titre");
-                    h1Titre.innerHTML += " Eleve";
-                    
-                    let dateNaissance = document.createElement("li");
-                    dateNaissance.innerHTML = "Date de naissance : ";
-                    let nomEleve = document.createElement("li");
-                    nomEleve.innerHTML = "Nom : ";
-                    let prenomEleve = document.createElement("li");
-                    prenomEleve.innerHTML = "Prénom : ";
-                    let mail = document.createElement("li");
-                    mail.innerHTML = "Mail : ";
-                    let codeEtablissement = document.createElement("li");
-                    codeEtablissement.innerHTML = "Code d'établissement : ";
-                    let classe = document.createElement("li");
-                    classe.innerHTML = "Classe : ";
-                    
-                    dateNaissance.innerHTML += jsonResponse["dateNaissance"];
-                    nomEleve.innerHTML += jsonResponse["nom"];
-                    prenomEleve.innerHTML += jsonResponse["prenom"];
-                    mail.innerHTML += jsonResponse["mail"];
-                    codeEtablissement.innerHTML += jsonResponse["codeEtablissement"];
-                    classe.innerHTML += jsonResponse["classe"];
-                    
-                    ul.appendChild(dateNaissance);
-                    ul.appendChild(nomEleve);
-                    ul.appendChild(prenomEleve);
-                    ul.appendChild(mail);
-                    ul.appendChild(codeEtablissement);
-                    ul.appendChild(classe);
+                    ul.innerHTML += '<li><span class="label">Date de naissance</span><span class="value">' + jsonResponse.dateNaissance + '</span></li>';
+                    ul.innerHTML += '<li><span class="label">Nom</span><span class="value">' + jsonResponse.nom + '</span></li>';
+                    ul.innerHTML += '<li><span class="label">Prénom</span><span class="value">' + jsonResponse.prenom + '</span></li>';
+                    ul.innerHTML += '<li><span class="label">Mail</span><span class="value">' + jsonResponse.mail + '</span></li>';
+                    ul.innerHTML += '<li><span class="label">Établissement</span><span class="value">' + jsonResponse.codeEtablissement + '</span></li>';
+                    ul.innerHTML += '<li><span class="label">Classe</span><span class="value">' + jsonResponse.classe + '</span></li>';
                 }
             }
             
@@ -155,56 +122,41 @@
                 
                 
                     
-                let logOutButton = document.createElement("button");
-                logOutButton.innerHTML = "Log out";
-                document.body.insertBefore(logOutButton, ul);
-                logOutButton.addEventListener('click', function() {
-                    console.log("Click sur le bouton 'log out'");
-                    logOut();
-                });
-
-                let login = document.createElement("li");
-                login.innerHTML = "Login : ";
-                let lidemandes = document.createElement("li");
-                lidemandes.innerHTML = "Anciennes interventions terminées : " + jsonResponse.nbIntervention;
-
-                let p = document.createElement("p");
-                lidemandes.appendChild(p);
-                let demandes = document.createElement("table");
-                lidemandes.appendChild(demandes);
-
-                ul.appendChild(login);
-                ul.appendChild(lidemandes);
-
-                login.innerHTML += jsonResponse["login"];
-                p.innerHTML = "";
-
-                jsonResponse["histoDemandes"].forEach((d) => {
-                    console.log(d);
-                    let tr = document.createElement("tr");
-                    let date = document.createElement("td");
-                    let matiere = document.createElement("td");
-                    let detail = document.createElement("td");
-
-                    date.innerHTML = d["date"];
-                    matiere.innerHTML = d["matiere"];
-                    detail.innerHTML = "DETAILS";
-                    detail.addEventListener('click', function() {
-                        console.log("Click sur le les détails");
-                        window.location = 'detailsDemande.html?demande=' + d["id"];
-                    });
-
-                    tr.appendChild(date);
-                    tr.appendChild(matiere);
-                    tr.appendChild(detail);
-                    demandes.appendChild(tr);
-                });
-
-                if (jsonResponse["histoDemandes"].length == 0)
-                {
-                    p.innerHTML = "Il n'y a pas encore d'intervention.";
-                }
+                ajouterLogOut(document.getElementById('ul-infos'));
+                var ul = document.getElementById('ul-infos');
+                ul.innerHTML = '<li><span class="label">Login</span><span class="value">' + jsonResponse.login + '</span></li>';
+                ul.innerHTML += '<li><span class="label">Interventions terminées</span><span class="value">' + jsonResponse.nbIntervention + '</span></li>';
+                ul.innerHTML += '<li><span class="label">Téléphone</span><span class="value">' + jsonResponse.telephone + '</span></li>';
+                ul.innerHTML += '<li><span class="label">Niveaux</span><span class="value">' + jsonResponse.niveauMin + ' – ' + jsonResponse.niveauMax + '</span></li>';
+                afficherHistorique(json.histoDemandes, 'intervenant');
                 
+            }
+
+            function afficherHistorique(demandes, role) {
+                var zone = document.getElementById('historique-zone');
+                if (!demandes || demandes.length === 0) {
+                    zone.innerHTML = '<p class="empty-state">Aucun historique pour le moment.</p>';
+                    return;
+                }
+                var table = document.createElement('table');
+                table.className = 'data-table';
+                table.innerHTML = '<thead><tr><th>Date</th><th>Matière</th><th></th></tr></thead>';
+                var tbody = document.createElement('tbody');
+                demandes.forEach(function (d) {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = '<td>' + d.date + '</td><td>' + d.matiere + '</td>';
+                    var td = document.createElement('td');
+                    td.className = 'link-cell';
+                    td.textContent = 'Détails';
+                    td.onclick = function () {
+                        window.location = 'detailsDemande.html?demande=' + d.id + '&role=' + role;
+                    };
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+                zone.innerHTML = '<h2 style="margin-top:1.5rem;font-size:1.1rem;color:var(--color-primary);">Historique</h2>';
+                zone.appendChild(table);
             }
             
             async function logOut() {
@@ -223,7 +175,7 @@
                             }
                         );
                 console.log(jsonResponse);
-                if (jsonResponse.reussit == "true") {
+                if (jsonResponse && jsonResponse.reussit == "true") {
                     console.log('logged out');
                     window.location = "./connexion.html";
                 }

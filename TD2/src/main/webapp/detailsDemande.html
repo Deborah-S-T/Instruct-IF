@@ -1,66 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Nouvelle Demande</title>
+        <title>Détails de la demande — Instruct-IF</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1>Détails demande</h1>
-        <ul id="ul-infos">
-            <li id="li-matiere">Matière : </li>
-            <li id="li-theme">Thème : </li>
-            <li id="li-login">Pseudo : </li>
-            <li id="li-duree">Duree : </li>
-            <li id="li-date">Date : </li>
-            <li id="li-bilan">Bilan : </li>
-        </ul>
-        
+        <div data-main>
+            <h1 class="page-title">Détails de la demande</h1>
+            <p class="page-subtitle" id="subtitle">Intervention terminée ou en cours</p>
+
+            <section class="card">
+                <h2>Informations générales</h2>
+                <div class="detail-grid" id="detail-content">
+                    <div class="detail-row">
+                        <span class="detail-label">Matière</span>
+                        <span class="detail-value" id="val-matiere">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Thème</span>
+                        <span class="detail-value" id="val-theme">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value" id="val-date">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Statut</span>
+                        <span class="detail-value" id="val-statut">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Description</span>
+                        <span class="detail-value" id="val-description">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Lien visio</span>
+                        <span class="detail-value" id="val-lien">—</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="card-eleve">
+                <h2>Élève</h2>
+                <div class="detail-grid">
+                    <div class="detail-row">
+                        <span class="detail-label">Nom</span>
+                        <span class="detail-value" id="val-nom-eleve">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Prénom</span>
+                        <span class="detail-value" id="val-prenom-eleve">—</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="card-intervenant">
+                <h2>Intervenant</h2>
+                <div class="detail-grid">
+                    <div class="detail-row">
+                        <span class="detail-label">Login</span>
+                        <span class="detail-value" id="val-login-inter">—</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="card-bilan">
+                <h2>Compte-rendu</h2>
+                <div class="detail-grid">
+                    <div class="detail-row">
+                        <span class="detail-label">Durée (min)</span>
+                        <span class="detail-value" id="val-duree">—</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Bilan</span>
+                        <span class="detail-value" id="val-bilan">—</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="toolbar">
+                <button type="button" class="btn btn-ghost" id="btn-retour">Retour au profil</button>
+            </div>
+        </div>
+
+        <script src="js/layout.js"></script>
         <script>
             function initPage() {
-                console.log("Initialisation de la page Détails demande");
-                
-                const params = new URLSearchParams(window.location.search); 
-                let demandeId = params.get("demande");
-                
-                afficherDemande(demandeId);
-            };
-            
-            async function afficherDemande(demandeId) {
-                console.log("Appel de l'Action: afficherDemande");
-                
-                let url = './ActionServlet?todo=recup-demande' + "&demandeId="+ demandeId;
-                let jsonResponse = await fetch(url)
-                        .then(
-                            function(httpResponse) {
-                                return httpResponse.json();
-                            }
-                        )
-                        .catch(
-                            function(error) {
-                                console.log(error);
-                                return null;
-                            }
-                        );
-                console.log("json:",jsonResponse);
-                if (jsonResponse) {
-                    let matiere = document.getElementById("li-matiere");
-                    let theme = document.getElementById("li-theme");
-                    let login = document.getElementById("li-login");
-                    let duree = document.getElementById("li-duree");
-                    let date = document.getElementById("li-date");
-                    let bilan = document.getElementById("li-bilan");
+                var params = new URLSearchParams(window.location.search);
+                var demandeId = params.get('demande');
+                var role = params.get('role') || 'intervenant';
 
-                    matiere.innerHTML += jsonResponse["matiere"];
-                    theme.innerHTML += jsonResponse["theme"];
-                    login.innerHTML += jsonResponse["loginInter"];
-                    duree.innerHTML += jsonResponse["duree"];
-                    date.innerHTML += jsonResponse["date"];
-                    bilan.innerHTML += jsonResponse["bilan"];
-                    
+                var retourHref = role === 'eleve'
+                    ? 'profil.html?intervenant=false&eleve=true&idEleve=null'
+                    : 'profil.html?intervenant=true&eleve=false&idEleve=null';
+
+                renderHeader({
+                    links: [
+                        { href: retourHref, label: 'Profil' },
+                        role === 'intervenant' ? { href: 'stats.html', label: 'Statistiques' } : null,
+                        role === 'intervenant' ? { href: 'intervention.html', label: 'Intervention' } : { href: 'nouvelleDemande.html', label: 'Nouvelle demande' }
+                    ].filter(Boolean)
+                });
+
+                document.getElementById('btn-retour').addEventListener('click', function () {
+                    window.location = retourHref;
+                });
+
+                if (role === 'eleve') {
+                    document.getElementById('subtitle').textContent = 'Votre demande de soutien';
                 }
+
+                afficherDemande(demandeId);
             }
-            
+
+            async function afficherDemande(demandeId) {
+                var json = await fetchJson('./ActionServlet?todo=recup-demande&demandeId=' + demandeId);
+                if (!json) return;
+
+                document.getElementById('val-matiere').textContent = json.matiere || '—';
+                document.getElementById('val-theme').textContent = json.theme || '—';
+                document.getElementById('val-date').textContent = json.date || '—';
+                document.getElementById('val-description').textContent = json.description || '—';
+
+                var lienEl = document.getElementById('val-lien');
+                if (json.lien && json.lien !== '-' && json.lien !== 'null') {
+                    lienEl.innerHTML = '<a href="' + json.lien + '" target="_blank" rel="noopener">' + json.lien + '</a>';
+                } else {
+                    lienEl.textContent = 'Non renseigné';
+                }
+
+                var statut = json.termine === 'true'
+                    ? '<span class="badge badge-success">Terminée</span>'
+                    : '<span class="badge badge-pending">En cours</span>';
+                document.getElementById('val-statut').innerHTML = statut;
+
+                document.getElementById('val-nom-eleve').textContent = json.nomEleve || '—';
+                document.getElementById('val-prenom-eleve').textContent = json.prenomEleve || '—';
+                document.getElementById('val-login-inter').textContent = json.loginInter || '—';
+
+                document.getElementById('val-duree').textContent =
+                    json.duree && json.duree !== 'null' ? json.duree + ' min' : '—';
+                document.getElementById('val-bilan').textContent =
+                    json.bilan && json.bilan !== 'null' ? json.bilan : '—';
+            }
+
             window.onload = initPage;
         </script>
     </body>

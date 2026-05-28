@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>Nouvelle Demande</title>
+        <title>État de la demande — Instruct-IF</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/instruct-if.css">
     </head>
     <body>
-        <h1>Etat demande</h1>
-        <button id="button-logOut">Log out</button>
-        <ul id="ul-infos">
-            <li id="li-matiere">Matière : </li>
-            <li id="li-theme">Thème : </li>
-            <li id="li-description">Description : </li>
-        </ul>
-        <div id='div-message'></div>
+        <div data-main>
+            <h1 class="page-title">État de la demande</h1>
+
+            <section class="card">
+                <ul class="info-list">
+                    <li><span class="label">Matière</span><span class="value" id="li-matiere">—</span></li>
+                    <li><span class="label">Thème</span><span class="value" id="li-theme">—</span></li>
+                    <li><span class="label">Description</span><span class="value" id="li-description">—</span></li>
+                </ul>
+                <div id="div-message"></div>
+            </section>
+
+            <div class="toolbar">
+                <a href="nouvelleDemande.html" class="btn btn-secondary">Nouvelle demande</a>
+                <button id="button-logOut" class="btn btn-ghost" type="button">Déconnexion</button>
+            </div>
+        </div>
+
+        <script src="js/layout.js"></script>
         
         <script>
             function initPage() {
                 console.log("Initialisation de la page Nouvelle demande");
                 
+                renderHeader({ links: [{ href: 'profil.html?intervenant=false&eleve=true&idEleve=null', label: 'Profil' }] });
+
                 document.getElementById('button-logOut').addEventListener('click', function() {
                     console.log("Click sur le bouton 'log out'");
                     logOut();
@@ -52,7 +66,7 @@
                 console.log(jsonResponse);
                 if (jsonResponse.reussit == "true") {
                     console.log('logged out');
-                    window.location.pathname = "TD2/connexion.html";
+                    window.location = "./connexion.html";
                 }
             }
             
@@ -78,16 +92,16 @@
                     let theme = document.getElementById("li-theme");
                     let liDescription = document.getElementById("li-description");
 
-                    matiere.innerHTML += jsonResponse["matiereNom"];
-                    theme.innerHTML += jsonResponse["themeNom"];
-                    liDescription.innerHTML += description;
+                    matiere.textContent = jsonResponse["matiereNom"];
+                    theme.textContent = jsonResponse["themeNom"];
+                    liDescription.textContent = description;
                     
                     let message = document.getElementById("div-message");
                     if (demandeCree == "true") {
-                        message.innerHTML = "Un intervenant a été trouvé <br> -> RDV sur ce lien <br>" + lienDemande;
+                        message.innerHTML = '<div class="alert alert-success">Un intervenant a été trouvé.<br>RDV sur ce lien : <a href="' + lienDemande + '" target="_blank">' + lienDemande + '</a></div>';
                     }
                     else if (demandeCree == "false") {
-                        message.innerHTML = "Désolé, pas d'intervenant disponible... Réessayez plus tard !";
+                        message.innerHTML = '<div class="alert alert-warning">Désolé, pas d\'intervenant disponible… Réessayez plus tard.</div>';
                     }
                 }
             }
